@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 # ATLAS URI
-./server/.env
+server/.env
