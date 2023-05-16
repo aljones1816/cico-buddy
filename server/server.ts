@@ -20,7 +20,7 @@ connection.once("open", () => {
 });
 
 //mport userlogRouter from "./routes/userlog";
-import { usersRouter } from "./routes/users";
+import { usersRouter } from "./routes/users.ts";
 
 app.use("/users", usersRouter);
 //app.use("/userlog", userlogRouter);

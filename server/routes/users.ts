@@ -1,10 +1,11 @@
-import { User } from "../models/user.model";
+import { User } from "../models/user.model.ts";
 
 import { Router } from "express";
 
 const router = Router();
 
-router.route("/").get((req, res) => {
+router.route("/users").get((req, res) => {
+  console.log(req);
   User.find()
     .then((users) => res.json(users))
     .catch((err) => res.status(400).json(`Error: ${err}`));
