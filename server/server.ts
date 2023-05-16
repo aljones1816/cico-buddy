@@ -13,6 +13,7 @@ app.use(express.json());
 
 const uri = process.env.ATLAS_URI ?? "";
 
+mongoose.set('debug', true);
 mongoose.connect(uri);
 const connection = mongoose.connection;
 connection.once("open", () => {
