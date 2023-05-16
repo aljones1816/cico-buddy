@@ -4,14 +4,14 @@ import { Router } from "express";
 
 const router = Router();
 
-router.route("/users").get((req, res) => {
+router.route("/").get((req, res) => {
   console.log(req);
   User.find()
     .then((users) => res.json(users))
     .catch((err) => res.status(400).json(`Error: ${err}`));
 });
 
-router.route("/users/add").post((req, res) => {
+router.route("/add").post((req, res) => {
   const username = req.body.username;
   const newUser = new User({ username });
 

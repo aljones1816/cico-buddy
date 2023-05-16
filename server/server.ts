@@ -22,6 +22,11 @@ connection.once("open", () => {
 //mport userlogRouter from "./routes/userlog";
 import { usersRouter } from "./routes/users.ts";
 
+app.get("/", function (req, res) {
+  console.log(req);
+  res.send("Hello World!");
+});
+
 app.use("/users", usersRouter);
 //app.use("/userlog", userlogRouter);
 
