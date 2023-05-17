@@ -8,7 +8,7 @@ import { userlogRouter } from "./routes/userlog.ts";
 config();
 
 const app = express();
-const port = process.env.PORT || 5100;
+const port = process.env.PORT ?? 5000;
 
 app.use(cors());
 app.use(express.json());
