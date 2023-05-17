@@ -24,7 +24,7 @@ connection.once("open", () => {
 
 app.get("/", function (req, res) {
   console.log(req);
-  res.send("Hello World!");
+  res.send("Hello World!!");
 });
 
 app.use("/users", usersRouter);
