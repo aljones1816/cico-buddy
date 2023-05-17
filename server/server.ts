@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
 import express from "express";
 import cors from "cors";
-
 import { config } from "dotenv";
+import { usersRouter } from "./routes/users.ts";
+import { userlogRouter } from "./routes/userlog.ts";
+
 config();
 
 const app = express();
@@ -13,15 +15,12 @@ app.use(express.json());
 
 const uri = process.env.ATLAS_URI ?? "";
 
-mongoose.set('debug', true);
+mongoose.set("debug", true);
 mongoose.connect(uri);
 const connection = mongoose.connection;
 connection.once("open", () => {
   console.log("MongoDB database connection established successfully");
 });
-
-//mport userlogRouter from "./routes/userlog";
-import { usersRouter } from "./routes/users.ts";
 
 app.get("/", function (req, res) {
   console.log(req);
@@ -29,7 +28,7 @@ app.get("/", function (req, res) {
 });
 
 app.use("/users", usersRouter);
-//app.use("/userlog", userlogRouter);
+app.use("/userlog", userlogRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);

@@ -1,5 +1,4 @@
 import { User } from "../models/user.model.ts";
-
 import { Router } from "express";
 
 const router = Router();

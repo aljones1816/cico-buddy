@@ -20,4 +20,4 @@ const userlogSchema = new Schema(
 
 const Userlog = mongoose.model("Userlog", userlogSchema);
 
-module.exports = Userlog;
+export { Userlog };
