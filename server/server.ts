@@ -13,16 +13,7 @@ const port = process.env.PORT ?? 5000;
 app.use(cors());
 app.use(express.json());
 
-const uri = process.env.ATLAS_URI ?? "";
-
-mongoose.set("debug", true);
-mongoose.connect(uri);
-const connection = mongoose.connection;
-connection.once("open", () => {
-  console.log("MongoDB database connection established successfully");
-});
-
-app.get("/", function (req, res) {
+app.get("/", (req, res) => {
   console.log(req);
   res.send("Hello World!!");
 });
@@ -30,6 +21,15 @@ app.get("/", function (req, res) {
 app.use("/users", usersRouter);
 app.use("/userlog", userlogRouter);
 
-app.listen(port, () => {
-  console.log(`Server is running on port: ${port}`);
-});
+// open mongoDB connection
+const uri = process.env.ATLAS_URI ?? "";
+mongoose
+  .connect(uri)
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Connected to db and listening on port: ${port}`);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });

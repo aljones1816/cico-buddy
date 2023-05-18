@@ -3,24 +3,25 @@ import { Router } from "express";
 
 const router = Router();
 
-router.route("/").get((req, res) => {
+router.get("/", async (req, res) => {
   console.log(req);
-  User.find()
-    .then((users) => res.json(users))
-    .catch((err) => res.status(400).json(`Error: ${err}`));
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(400).json(`Error: ${err}`);
+  }
 });
 
-router.route("/add").post((req, res) => {
+router.post("/add", async (req, res) => {
   const username = req.body.username;
-  const newUser = new User({ username });
-
-  newUser
-    .save()
-    .then(() => res.json("User added!"))
-    .catch((err) => res.status(400).json(`Error: ${err}`));
+  try {
+    const newUser = await User.create({ username });
+    res.status(200).json(newUser);
+  } catch (err) {
+    res.status(400).json(`Error: ${err}`);
+  }
 });
 
 //export default router;
 export { router as usersRouter };
-
-// https://youtu.be/7CqJlxBYj-M?t=1562
