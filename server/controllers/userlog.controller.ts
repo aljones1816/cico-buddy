@@ -1,5 +1,6 @@
 import { Userlog } from "../models/userlog.model.ts";
 import { Request, Response } from "express";
+import Mongoose from "mongoose";
 
 // get all userlogs
 const getUserlogs = async (req: Request, res: Response) => {
@@ -46,8 +47,12 @@ const createUserlog = async (req: Request, res: Response) => {
 
 // delete userlog
 const deleteUserlog = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  if (!Mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json("No id provided");
+  }
   try {
-    const userlog = await Userlog.findByIdAndDelete(req.params.id);
+    const userlog = await Userlog.findByIdAndDelete(id);
     if (!userlog) {
       return res.status(404).send("Userlog not found");
     }
@@ -59,8 +64,13 @@ const deleteUserlog = async (req: Request, res: Response) => {
 
 // get userlog by id
 const getUserlogById = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  if (!Mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json("No id provided");
+  }
+
   try {
-    const userlog = await Userlog.findById(req.params.id);
+    const userlog = await Userlog.findById(id);
     if (!userlog) {
       return res.status(404).send("Userlog not found");
     }
@@ -72,26 +82,24 @@ const getUserlogById = async (req: Request, res: Response) => {
 
 // update userlog by id
 const updateUserlogById = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  if (!Mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json("No id provided");
+  }
+
   try {
-    const userlog = await Userlog.findById(req.params.id);
+    const userlog = await Userlog.findByIdAndUpdate(id, { ...req.body });
     if (!userlog) {
       return res.status(404).send("Userlog not found");
     }
-    userlog.username = req.body.username;
-    userlog.breakfast = Number(req.body.breakfast);
-    userlog.lunch = Number(req.body.lunch);
-    userlog.dinner = Number(req.body.dinner);
-    userlog.snacks = Number(req.body.snacks);
-    userlog.exercise = Number(req.body.exercise);
-    userlog.bodyweight = Number(req.body.bodyweight);
-    userlog.date = new Date(Date.parse(req.body.date));
-    const updatedUserlog = await userlog.save();
-    res.status(200).json(updatedUserlog);
+
+    res.status(200).json(userlog);
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
 };
 
+//export default controller;
 export {
   getUserlogs,
   createUserlog,
