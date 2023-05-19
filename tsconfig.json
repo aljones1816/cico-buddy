@@ -21,6 +21,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "server", "**/*.ts"],
+  "include": ["frontend", "server", "**/*.ts"],
   "exclude": ["node_modules", ".vscode"]
 }
