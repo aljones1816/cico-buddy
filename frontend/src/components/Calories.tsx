@@ -106,7 +106,7 @@ const Calories = ({ userlog, setCurrentLog }: CaloriesProps) => {
             userLog.snacks -
             userLog.exercise)
         }
-        string="Calories"
+        string="Calories remaining"
       ></InfoIsland>
       <div className="addcalories">
         <h1>Calories</h1>

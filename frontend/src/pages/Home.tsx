@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Calories from "../components/Calories";
 import Weight from "../components/Weight";
+import History from "../components/History";
 import { UserLog } from "../api/models/userlog";
 import { useUserLogs } from "../api/hooks/userlog";
 
@@ -40,6 +41,7 @@ const Home = () => {
         <Weight userlog={currentLog} setCurrentLog={setCurrentLog} />
       )}
       <button onClick={() => setCalories(!calories)}>Weight</button>
+      {userLogs && <History userLogs={userLogs} />}
     </>
   );
 };
