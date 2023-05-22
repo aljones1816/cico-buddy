@@ -10,6 +10,7 @@ interface CaloriesProps {
 const Calories = ({ userlog, setCurrentLog }: CaloriesProps) => {
   const [userLog, setUserLog] = useState<UserLog>(userlog);
 
+  console.log(userLog);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 

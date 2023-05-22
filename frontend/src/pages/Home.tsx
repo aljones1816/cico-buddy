@@ -11,7 +11,6 @@ const Home = () => {
   if (error) console.log(error);
 
   const [currentLog, setCurrentLog] = useState<UserLog>();
-  const [calories, setCalories] = useState<boolean>(true);
 
   // add authorization context
   // add context for user data (could be inside auth context)
@@ -34,13 +33,12 @@ const Home = () => {
 
   return (
     <>
-      {calories && currentLog && (
+      {currentLog && (
         <Calories userlog={currentLog} setCurrentLog={setCurrentLog} />
       )}
-      {!calories && currentLog && (
+      {currentLog && (
         <Weight userlog={currentLog} setCurrentLog={setCurrentLog} />
       )}
-      <button onClick={() => setCalories(!calories)}>Weight</button>
       {userLogs && <History userLogs={userLogs} />}
     </>
   );

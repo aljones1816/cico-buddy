@@ -2,12 +2,6 @@ const url = "http://localhost:5100/userlog";
 import { useEffect, useState } from "react";
 import { UserLog } from "../models/userlog";
 
-// do a custom hook to handle all the fetching, return the data, return an error if there was an error, and return a boolean if the data is loading. An object with three values.
-// hook will have a state value of isLoading. When start fetch isLoading is True, when fetch is complete isLoading is False
-// will have a state value of data. when fetch is done setData to the data from the fetch
-// surround fetch request in try catch block. In hook catch the error, then setError to whatever value I want.
-// hook could have retries built in. If fetch fails, try again. If fetch fails again, try again. If fetch fails again, try again. If fetch fails again, setError to whatever value I want.
-
 const useUserLogs = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<UserLog[]>([]);
@@ -40,4 +34,23 @@ const useUserLogs = () => {
   return { isLoading, data, error };
 };
 
-export { useUserLogs };
+const useAddUserLog = async (userlog: UserLog) => {
+  try {
+    const res = await fetch(`${url}/add`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(userlog),
+    });
+    if (!res.ok) {
+      throw new Error("Error adding userlog");
+    }
+  } catch (err) {
+    if (typeof err === "string") {
+      throw new Error(err);
+    } else {
+      throw new Error("An unknown error occurred");
+    }
+  }
+};
+
+export { useUserLogs, useAddUserLog };
