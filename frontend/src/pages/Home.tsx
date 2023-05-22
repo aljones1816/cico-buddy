@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
-import InfoIsland from "../components/InfoIsland";
+import Calories from "../components/Calories";
+import Weight from "../components/Weight";
 import { UserLog } from "../api/models/userlog";
-import Addcalories from "../components/Addcalories";
 import { useUserLogs } from "../api/hooks/userlog";
 
-const Calories = () => {
+const Home = () => {
   const { data: userLogs, error, isLoading } = useUserLogs();
 
+  if (error) console.log(error);
+
   const [currentLog, setCurrentLog] = useState<UserLog>();
+  const [calories, setCalories] = useState<boolean>(true);
 
   // add authorization context
   // add context for user data (could be inside auth context)
@@ -29,29 +32,16 @@ const Calories = () => {
   }, [userLogs, isLoading]);
 
   return (
-    <div className="calories">
-      <h1>Calories</h1>
-      <div className="user-logs">
-        {!isLoading && currentLog && (
-          <>
-            <InfoIsland
-              number={
-                1800 -
-                (currentLog.breakfast +
-                  currentLog.lunch +
-                  currentLog.dinner +
-                  currentLog.snacks -
-                  currentLog.exercise)
-              }
-              string="Calories remaining"
-            />
-            <Addcalories userlog={currentLog} setCurrentLog={setCurrentLog} />
-          </>
-        )}
-        {isLoading && <p>Loading...</p>}
-      </div>
-    </div>
+    <>
+      {calories && currentLog && (
+        <Calories userlog={currentLog} setCurrentLog={setCurrentLog} />
+      )}
+      {!calories && currentLog && (
+        <Weight userlog={currentLog} setCurrentLog={setCurrentLog} />
+      )}
+      <button onClick={() => setCalories(!calories)}>Weight</button>
+    </>
   );
 };
 
-export default Calories;
+export default Home;

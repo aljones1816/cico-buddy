@@ -1,12 +1,13 @@
-import { UserLog } from "../api/models/userlog";
 import { useState } from "react";
+import InfoIsland from "./InfoIsland";
+import { UserLog } from "../api/models/userlog";
 
-interface AddcaloriesProps {
+interface CaloriesProps {
   userlog: UserLog;
   setCurrentLog: React.Dispatch<React.SetStateAction<UserLog | undefined>>;
 }
 
-const Addcalories = ({ userlog, setCurrentLog }: AddcaloriesProps) => {
+const Calories = ({ userlog, setCurrentLog }: CaloriesProps) => {
   const [userLog, setUserLog] = useState<UserLog>(userlog);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -95,23 +96,36 @@ const Addcalories = ({ userlog, setCurrentLog }: AddcaloriesProps) => {
   };
 
   return (
-    <div className="addcalories">
-      <h1>Add Calories</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="breakfast">Breakfast</label>
-        <input type="number" name="breakfast" id="breakfast" />
-        <label htmlFor="lunch">Lunch</label>
-        <input type="number" name="lunch" id="lunch" />
-        <label htmlFor="dinner">Dinner</label>
-        <input type="number" name="dinner" id="dinner" />
-        <label htmlFor="snacks">Snacks</label>
-        <input type="number" name="snacks" id="snacks" />
-        <label htmlFor="exercise">Exercise</label>
-        <input type="number" name="exercise" id="exercise" />
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+    <>
+      <InfoIsland
+        number={
+          1800 -
+          (userLog.breakfast +
+            userLog.lunch +
+            userLog.dinner +
+            userLog.snacks -
+            userLog.exercise)
+        }
+        string="Calories"
+      ></InfoIsland>
+      <div className="addcalories">
+        <h1>Calories</h1>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="breakfast">Breakfast</label>
+          <input type="number" name="breakfast" id="breakfast" />
+          <label htmlFor="lunch">Lunch</label>
+          <input type="number" name="lunch" id="lunch" />
+          <label htmlFor="dinner">Dinner</label>
+          <input type="number" name="dinner" id="dinner" />
+          <label htmlFor="snacks">Snacks</label>
+          <input type="number" name="snacks" id="snacks" />
+          <label htmlFor="exercise">Exercise</label>
+          <input type="number" name="exercise" id="exercise" />
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </>
   );
 };
 
-export default Addcalories;
+export default Calories;
