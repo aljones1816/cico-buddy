@@ -7,6 +7,25 @@ const getUserlogs = async (req: Request, res: Response) => {
   console.log(req);
   try {
     const userlogs = await Userlog.find();
+    // check if userlogs contains a log for today's date
+    // if not, create one
+    const today = new Date();
+    const todayString = today.toDateString();
+    const todayLog = userlogs.find((log) => {
+      return log.date.toDateString() === todayString;
+    });
+    if (!todayLog) {
+      const newTodayLog = await Userlog.create({
+        username: "test",
+        breakfast: 0,
+        lunch: 0,
+        dinner: 0,
+        snacks: 0,
+        exercise: 0,
+        bodyweight: 0,
+      });
+      userlogs.push(newTodayLog);
+    }
     res.status(200).json(userlogs);
   } catch (err) {
     res.status(400).json(`Error: ${err}`);

@@ -11,7 +11,7 @@ const userlogSchema = new Schema(
     snacks: { type: Number, default: 0 },
     exercise: { type: Number, default: 0 },
     bodyweight: { type: Number, default: 0 },
-    date: { type: Date, default: Date.now, required: true },
+    date: { type: Date, default: Date.now },
   },
   {
     timestamps: true,

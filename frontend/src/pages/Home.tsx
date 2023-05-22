@@ -19,13 +19,9 @@ const Home = () => {
       setCurrentLog(
         userLogs.find((userLog: UserLog) => {
           const date = new Date();
-          const today = new Date(
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate()
-          );
-          const logDate = new Date(userLog.date);
-          return today.getTime() === logDate.getTime();
+          const todayString = date.toDateString();
+          const userLogDate = new Date(userLog.date).toDateString();
+          return todayString === userLogDate;
         })
       );
     }
