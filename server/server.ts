@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import express from "express";
 import cors from "cors";
 import { config } from "dotenv";
-import { usersRouter } from "./routes/users.ts";
+import { userRouter } from "./routes/user.ts";
 import { userlogRouter } from "./routes/userlog.ts";
 
 config();
@@ -18,8 +18,8 @@ app.get("/", (req, res) => {
   res.send("Hello World!!");
 });
 
-app.use("/users", usersRouter);
-app.use("/userlog", userlogRouter);
+app.use("/api/user", userRouter);
+app.use("/api/userlog", userlogRouter);
 
 // open mongoDB connection
 const uri = process.env.ATLAS_URI ?? "";

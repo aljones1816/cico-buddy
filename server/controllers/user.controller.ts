@@ -1,46 +1,50 @@
-import { User } from "../models/user.model.ts";
+import { User, IUser } from "../models/user.model.ts";
 import { Request, Response } from "express";
-import Mongoose from "mongoose";
+import jsonwebtoken from "jsonwebtoken";
 
-// get all users
-const getUsers = async (req: Request, res: Response) => {
-  console.log(req);
+const createToken = (_id: string) => {
+  return jsonwebtoken.sign({ _id }, process.env.SECRET!, { expiresIn: "3d" });
+};
+
+// login user
+const loginUser = async (req: Request, res: Response) => {
+  const [email, password] = [req.body.email, req.body.password];
   try {
-    const users = await User.find();
-    res.status(200).json(users);
+    const user = await (
+      User as typeof User & {
+        login: (email: string, password: string) => Promise<IUser>;
+      }
+    ).login(email, password);
+
+    // create a token
+    const token = createToken(user._id);
+
+    res.status(200).json({ email, token });
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
 };
 
-// create new user
-const createUser = async (req: Request, res: Response) => {
-  const username = req.body.username;
+// logout user
+//const logoutUser = async (req: Request, res: Response) => {};
+
+// signup user
+const signupUser = async (req: Request, res: Response) => {
+  const [email, password] = [req.body.email, req.body.password];
   try {
-    const newUser = await User.create({ username });
-    res.status(200).json(newUser);
+    const user = await (
+      User as typeof User & {
+        signup: (email: string, password: string) => Promise<IUser>;
+      }
+    ).signup(email, password);
+
+    // create a token
+    const token = createToken(user._id);
+
+    res.status(200).json({ email, token });
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
 };
-
-// get a user by id
-const getUserById = async (req: Request, res: Response) => {
-  const id = req.params.id;
-  if (!Mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json("No id provided");
-  }
-
-  try {
-    const user = await User.findById(id);
-    if (!user) {
-      return res.status(404).send("Userlog not found");
-    }
-    res.status(200).json(user);
-  } catch (err) {
-    res.status(400).json(`Error: ${err}`);
-  }
-};
-
 //export default controller;
-export { getUsers, createUser, getUserById };
+export { signupUser, loginUser };
