@@ -66,16 +66,13 @@ const Calories = ({ currentLog, setCurrentLog }: CaloriesProps) => {
     };
 
     const updateLog = async () => {
-      const request = await fetch(
-        `http://localhost:5100/api/userlog/update/${userLog._id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: generateRequestBody(),
-        }
-      );
+      await fetch(`http://localhost:5100/api/userlog/update/${userLog._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: generateRequestBody(),
+      });
       const updatedLogResponse = await fetch(
         `http://localhost:5100/api/userlog/${userLog._id}`
       );

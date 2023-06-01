@@ -28,7 +28,6 @@ const useGetUserLogs = () => {
   };
 
   useEffect(() => {
-    console.log("heyyyy i just fired");
     fetchUserLogs();
   }, []);
 
