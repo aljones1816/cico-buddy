@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const userlogSchema = new Schema(
   {
-    username: { type: String, required: true },
+    email: { type: String, required: true },
     breakfast: { type: Number, default: 0 },
     lunch: { type: Number, default: 0 },
     dinner: { type: Number, default: 0 },

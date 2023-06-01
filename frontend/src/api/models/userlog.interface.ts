@@ -1,6 +1,6 @@
-type UserLog = {
+export interface iUserLog {
   _id: string;
-  username: string;
+  email: string;
   breakfast: number;
   lunch: number;
   dinner: number;
@@ -8,9 +8,4 @@ type UserLog = {
   exercise: number;
   bodyweight: number;
   date: Date;
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
-};
-
-export type { UserLog };
+}

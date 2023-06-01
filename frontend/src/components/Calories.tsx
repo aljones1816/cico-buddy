@@ -1,17 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InfoIsland from "./InfoIsland";
-import { UserLog } from "../api/models/userlog";
+import { iUserLog } from "../api/models/userlog.interface";
 
 interface CaloriesProps {
-  userlog: UserLog;
-  setCurrentLog: React.Dispatch<React.SetStateAction<UserLog | undefined>>;
+  currentLog: iUserLog;
+  setCurrentLog: React.Dispatch<React.SetStateAction<iUserLog>>;
 }
 
-const Calories = ({ userlog, setCurrentLog }: CaloriesProps) => {
-  const [userLog, setUserLog] = useState<UserLog>(userlog);
+const Calories = ({ currentLog, setCurrentLog }: CaloriesProps) => {
+  const [userLog, setUserLog] = useState<iUserLog>(currentLog);
 
-  console.log(userLog);
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    setUserLog(currentLog);
+  }, [currentLog]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     let breakfast = parseInt(
@@ -32,24 +35,25 @@ const Calories = ({ userlog, setCurrentLog }: CaloriesProps) => {
     );
 
     if (!breakfast) {
-      breakfast = userLog.breakfast;
+      breakfast = currentLog.breakfast;
     }
     if (!lunch) {
-      lunch = userLog.lunch;
+      lunch = currentLog.lunch;
     }
     if (!dinner) {
-      dinner = userLog.dinner;
+      dinner = currentLog.dinner;
     }
     if (!snacks) {
-      snacks = userLog.snacks;
+      snacks = currentLog.snacks;
     }
     if (!exercise) {
-      exercise = userLog.exercise;
+      exercise = currentLog.exercise;
     }
 
-    const generateResponseBody = () => {
+    const generateRequestBody = () => {
       try {
         return JSON.stringify({
+          email: "email@gmail.com",
           breakfast: breakfast,
           lunch: lunch,
           dinner: dinner,
@@ -62,38 +66,46 @@ const Calories = ({ userlog, setCurrentLog }: CaloriesProps) => {
     };
 
     const updateLog = async () => {
-      const response = await fetch(
-        `http://localhost:5100/userlog/update/${userLog._id}`,
+      const request = await fetch(
+        `http://localhost:5100/api/userlog/update/${userLog._id}`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: generateResponseBody(),
+          body: generateRequestBody(),
         }
       );
-      const data = await response.json();
-      console.log(data);
+      const updatedLogResponse = await fetch(
+        `http://localhost:5100/api/userlog/${userLog._id}`
+      );
+      const updatedLogData = await updatedLogResponse.json();
+
+      setCurrentLog(updatedLogData);
     };
 
-    updateLog();
-    setUserLog({
-      ...userLog,
-      breakfast: breakfast,
-      lunch: lunch,
-      dinner: dinner,
-      snacks: snacks,
-      exercise: exercise,
-    });
+    const addLog = async () => {
+      const request = await fetch(`http://localhost:5100/api/userlog/add`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: generateRequestBody(),
+      });
+      const userId = await request.json();
+      const latestLogResponse = await fetch(
+        `http://localhost:5100/api/userlog/${userId._id}`
+      );
+      const latestLogData = await latestLogResponse.json();
 
-    setCurrentLog({
-      ...userLog,
-      breakfast: breakfast,
-      lunch: lunch,
-      dinner: dinner,
-      snacks: snacks,
-      exercise: exercise,
-    });
+      setCurrentLog(latestLogData);
+    };
+
+    if (currentLog._id) {
+      await updateLog();
+    } else {
+      await addLog();
+    }
   };
 
   return (

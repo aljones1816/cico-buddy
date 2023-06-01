@@ -1,14 +1,14 @@
 import InfoIsland from "./InfoIsland";
-import { UserLog } from "../api/models/userlog";
+import { iUserLog } from "../api/models/userlog.interface";
 import { useState } from "react";
 
 interface WeightProps {
-  userlog: UserLog;
-  setCurrentLog: React.Dispatch<React.SetStateAction<UserLog | undefined>>;
+  userlog: iUserLog;
+  setCurrentLog: React.Dispatch<React.SetStateAction<iUserLog>>;
 }
 
 const Weight = ({ userlog, setCurrentLog }: WeightProps) => {
-  const [userLog, setUserLog] = useState<UserLog>(userlog);
+  const [userLog, setUserLog] = useState<iUserLog>(userlog);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,7 +33,7 @@ const Weight = ({ userlog, setCurrentLog }: WeightProps) => {
 
     const updateLog = async () => {
       const response = await fetch(
-        `http://localhost:5100/userlog/update/${userLog._id}`,
+        `http://localhost:5100/api/userlog/update/${userLog._id}`,
         {
           method: "POST",
           headers: {

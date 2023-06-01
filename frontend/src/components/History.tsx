@@ -1,7 +1,7 @@
-import { UserLog } from "../api/models/userlog";
+import { iUserLog } from "../api/models/userlog.interface";
 
 interface HistoryProps {
-  userLogs: UserLog[];
+  userLogs: iUserLog[];
 }
 
 const History = ({ userLogs }: HistoryProps) => {
@@ -18,7 +18,7 @@ const History = ({ userLogs }: HistoryProps) => {
         </thead>
 
         <tbody>
-          {userLogs.map((userLog: UserLog, index) => (
+          {userLogs.map((userLog: iUserLog, index) => (
             <tr key={index}>
               <td>{new Date(userLog.date).toDateString()}</td>
               <td>

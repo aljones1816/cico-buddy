@@ -7,25 +7,6 @@ const getUserlogs = async (req: Request, res: Response) => {
   console.log(req);
   try {
     const userlogs = await Userlog.find();
-    // check if userlogs contains a log for today's date
-    // if not, create one
-    const today = new Date();
-    const todayString = today.toDateString();
-    const todayLog = userlogs.find((log) => {
-      return log.date.toDateString() === todayString;
-    });
-    if (!todayLog) {
-      const newTodayLog = await Userlog.create({
-        username: "test",
-        breakfast: 0,
-        lunch: 0,
-        dinner: 0,
-        snacks: 0,
-        exercise: 0,
-        bodyweight: 0,
-      });
-      userlogs.push(newTodayLog);
-    }
     res.status(200).json(userlogs);
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
@@ -34,29 +15,22 @@ const getUserlogs = async (req: Request, res: Response) => {
 
 // create new userlog
 const createUserlog = async (req: Request, res: Response) => {
-  if (!req.body) {
-    return res.status(400).json("No request body");
-  }
-
-  const username = req.body.username;
-  const breakfast = Number(req.body.breakfast);
-  const lunch = Number(req.body.lunch);
-  const dinner = Number(req.body.dinner);
-  const snacks = Number(req.body.snacks);
-  const exercise = Number(req.body.exercise);
-  const bodyweight = Number(req.body.bodyweight);
-  const date = Date.parse(req.body.date);
-
+  const email = req.body.email;
+  const breakfast = req.body.breakfast ? req.body.breakfast : 0;
+  const lunch = req.body.lunch ? req.body.lunch : 0;
+  const dinner = req.body.dinner ? req.body.dinner : 0;
+  const snacks = req.body.snacks ? req.body.snacks : 0;
+  const exercise = req.body.exercise ? req.body.exercise : 0;
+  const bodyweight = req.body.bodyweight ? req.body.bodyweight : 0;
   try {
     const newUserlog = await Userlog.create({
-      username,
+      email,
       breakfast,
       lunch,
       dinner,
       snacks,
       exercise,
       bodyweight,
-      date,
     });
     res.status(200).json(newUserlog);
   } catch (err) {

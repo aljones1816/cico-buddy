@@ -2,35 +2,42 @@ import { useState, useEffect } from "react";
 import Calories from "../components/Calories";
 import Weight from "../components/Weight";
 import History from "../components/History";
-import { UserLog } from "../api/models/userlog";
-import { useUserLogs } from "../api/hooks/userlog";
+import { iUserLog } from "../api/models/userlog.interface";
+import { useGetUserLogs } from "../api/hooks/useUserLog";
 
 const Home = () => {
-  const { data: userLogs, error, isLoading } = useUserLogs();
+  const { isLoading, data: userLogs, error } = useGetUserLogs();
+  const [currentLog, setCurrentLog] = useState<iUserLog>({
+    _id: "",
+    email: "",
+    date: new Date(),
+    breakfast: 0,
+    lunch: 0,
+    dinner: 0,
+    snacks: 0,
+    exercise: 0,
+    bodyweight: 0,
+  });
 
-  if (error) console.log(error);
-
-  const [currentLog, setCurrentLog] = useState<UserLog>();
-
-  // add authorization context
-  // add context for user data (could be inside auth context)
   useEffect(() => {
-    if (!isLoading) {
-      setCurrentLog(
-        userLogs.find((userLog: UserLog) => {
-          const date = new Date();
-          const todayString = date.toDateString();
-          const userLogDate = new Date(userLog.date).toDateString();
-          return todayString === userLogDate;
-        })
-      );
-    }
-  }, [userLogs, isLoading]);
+    if (userLogs) {
+      const todayString = new Date().toDateString();
+      const todayLog = userLogs.find((log) => {
+        return new Date(log.date).toDateString() === todayString;
+      });
 
+      if (todayLog) {
+        setCurrentLog(todayLog);
+      }
+    }
+  }, [userLogs]);
+
+  if (isLoading) return <h1>Loading...</h1>;
+  if (error) return <h1>Something went wrong!</h1>;
   return (
     <>
       {currentLog && (
-        <Calories userlog={currentLog} setCurrentLog={setCurrentLog} />
+        <Calories currentLog={currentLog} setCurrentLog={setCurrentLog} />
       )}
       {currentLog && (
         <Weight userlog={currentLog} setCurrentLog={setCurrentLog} />
