@@ -40,7 +40,7 @@ const Home = () => {
         <Calories currentLog={currentLog} setCurrentLog={setCurrentLog} />
       )}
       {currentLog && (
-        <Weight userlog={currentLog} setCurrentLog={setCurrentLog} />
+        <Weight currentLog={currentLog} setCurrentLog={setCurrentLog} />
       )}
       {userLogs && <History userLogs={userLogs} />}
     </>

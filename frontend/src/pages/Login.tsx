@@ -1,11 +1,15 @@
 import { useState } from "react";
+import { useLogin } from "../api/hooks/useLogin";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const { handleLogin } = useLogin();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    handleLogin(email, password);
   };
 
   return (

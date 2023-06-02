@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { iUser } from "../api/models/user.interface";
 import { iAuthContext } from "../api/models/authContext.interface";
 
@@ -28,6 +28,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const logout = () => {
     setUser(null);
   };
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      setUser(JSON.parse(user));
+    }
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>

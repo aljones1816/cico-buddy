@@ -1,16 +1,20 @@
 import InfoIsland from "./InfoIsland";
 import { iUserLog } from "../api/models/userlog.interface";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface WeightProps {
-  userlog: iUserLog;
+  currentLog: iUserLog;
   setCurrentLog: React.Dispatch<React.SetStateAction<iUserLog>>;
 }
 
-const Weight = ({ userlog, setCurrentLog }: WeightProps) => {
-  const [userLog, setUserLog] = useState<iUserLog>(userlog);
+const Weight = ({ currentLog, setCurrentLog }: WeightProps) => {
+  const [userLog, setUserLog] = useState<iUserLog>(currentLog);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    setUserLog(currentLog);
+  }, [currentLog]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     let weight = parseInt(
@@ -21,9 +25,10 @@ const Weight = ({ userlog, setCurrentLog }: WeightProps) => {
       weight = 0;
     }
 
-    const generateResponseBody = () => {
+    const generateRequestBody = () => {
       try {
         return JSON.stringify({
+          email: "email@mymail.com",
           bodyweight: weight,
         });
       } catch (error) {
@@ -32,32 +37,46 @@ const Weight = ({ userlog, setCurrentLog }: WeightProps) => {
     };
 
     const updateLog = async () => {
-      const response = await fetch(
-        `http://localhost:5100/api/userlog/update/${userLog._id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: generateResponseBody(),
-        }
-      );
-      const data = await response.json();
-      console.log(data);
+      await fetch(`/api/userlog/update/${userLog._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: generateRequestBody(),
+      });
+      const updatedLogResponse = await fetch(`/api/userlog/${userLog._id}`);
+      const updatedLogData = await updatedLogResponse.json();
+
+      setCurrentLog(updatedLogData);
     };
 
-    updateLog();
+    const addLog = async () => {
+      const request = await fetch(`/api/userlog/add`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: generateRequestBody(),
+      });
+      const userId = await request.json();
+      const latestLogResponse = await fetch(`/api/userlog/${userId._id}`);
+      const latestLogData = await latestLogResponse.json();
 
-    setUserLog({ ...userLog, bodyweight: weight });
+      setCurrentLog(latestLogData);
+    };
 
-    setCurrentLog({ ...userLog, bodyweight: weight });
+    if (currentLog._id) {
+      await updateLog();
+    } else {
+      await addLog();
+    }
   };
 
   return (
     <>
+      <h1>Weight</h1>
       <InfoIsland number={userLog.bodyweight} string="Weight" />
       <div className="addweight">
-        <h1>Weight</h1>
         <form onSubmit={handleSubmit}>
           <label htmlFor="weight">Weight</label>
           <input type="number" name="weight" id="weight" />

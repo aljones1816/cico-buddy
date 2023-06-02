@@ -66,23 +66,21 @@ const Calories = ({ currentLog, setCurrentLog }: CaloriesProps) => {
     };
 
     const updateLog = async () => {
-      await fetch(`http://localhost:5100/api/userlog/update/${userLog._id}`, {
+      await fetch(`/api/userlog/update/${userLog._id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: generateRequestBody(),
       });
-      const updatedLogResponse = await fetch(
-        `http://localhost:5100/api/userlog/${userLog._id}`
-      );
+      const updatedLogResponse = await fetch(`/api/userlog/${userLog._id}`);
       const updatedLogData = await updatedLogResponse.json();
 
       setCurrentLog(updatedLogData);
     };
 
     const addLog = async () => {
-      const request = await fetch(`http://localhost:5100/api/userlog/add`, {
+      const request = await fetch(`/api/userlog/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -90,9 +88,7 @@ const Calories = ({ currentLog, setCurrentLog }: CaloriesProps) => {
         body: generateRequestBody(),
       });
       const userId = await request.json();
-      const latestLogResponse = await fetch(
-        `http://localhost:5100/api/userlog/${userId._id}`
-      );
+      const latestLogResponse = await fetch(`/api/userlog/${userId._id}`);
       const latestLogData = await latestLogResponse.json();
 
       setCurrentLog(latestLogData);
@@ -107,6 +103,7 @@ const Calories = ({ currentLog, setCurrentLog }: CaloriesProps) => {
 
   return (
     <>
+      <h1>Calories</h1>
       <InfoIsland
         number={
           1800 -
@@ -119,7 +116,6 @@ const Calories = ({ currentLog, setCurrentLog }: CaloriesProps) => {
         string="Calories remaining"
       ></InfoIsland>
       <div className="addcalories">
-        <h1>Calories</h1>
         <form onSubmit={handleSubmit}>
           <label htmlFor="breakfast">Breakfast</label>
           <input type="number" name="breakfast" id="breakfast" />

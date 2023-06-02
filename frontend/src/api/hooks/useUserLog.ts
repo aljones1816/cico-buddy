@@ -1,4 +1,4 @@
-const url = "http://localhost:5100/api/userlog";
+const url = "/api/userlog";
 import { useEffect, useState } from "react";
 import { iUserLog } from "../models/userlog.interface";
 
