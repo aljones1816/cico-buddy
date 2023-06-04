@@ -7,6 +7,7 @@ import { useGetUserLogs } from "../api/hooks/useUserLog";
 
 const Home = () => {
   const { isLoading, data: userLogs, error } = useGetUserLogs();
+
   const [currentLog, setCurrentLog] = useState<iUserLog>({
     _id: "",
     email: "",

@@ -1,6 +1,7 @@
 import InfoIsland from "./InfoIsland";
 import { iUserLog } from "../api/models/userlog.interface";
 import { useState, useEffect } from "react";
+import { useAuth } from "../api/hooks/useAuthContext";
 
 interface WeightProps {
   currentLog: iUserLog;
@@ -9,6 +10,7 @@ interface WeightProps {
 
 const Weight = ({ currentLog, setCurrentLog }: WeightProps) => {
   const [userLog, setUserLog] = useState<iUserLog>(currentLog);
+  const { user } = useAuth();
 
   useEffect(() => {
     setUserLog(currentLog);
@@ -16,7 +18,7 @@ const Weight = ({ currentLog, setCurrentLog }: WeightProps) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    if (!user) return;
     let weight = parseInt(
       (e.currentTarget.elements.namedItem("weight") as HTMLInputElement).value
     );
@@ -41,10 +43,15 @@ const Weight = ({ currentLog, setCurrentLog }: WeightProps) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.token}`,
         },
         body: generateRequestBody(),
       });
-      const updatedLogResponse = await fetch(`/api/userlog/${userLog._id}`);
+      const updatedLogResponse = await fetch(`/api/userlog/${userLog._id}`, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      });
       const updatedLogData = await updatedLogResponse.json();
 
       setCurrentLog(updatedLogData);
@@ -55,16 +62,22 @@ const Weight = ({ currentLog, setCurrentLog }: WeightProps) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.token}`,
         },
         body: generateRequestBody(),
       });
       const userId = await request.json();
-      const latestLogResponse = await fetch(`/api/userlog/${userId._id}`);
+
+      const latestLogResponse = await fetch(`/api/userlog/${userId._id}`, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      });
       const latestLogData = await latestLogResponse.json();
 
       setCurrentLog(latestLogData);
     };
-
+    if (!user) return;
     if (currentLog._id) {
       await updateLog();
     } else {

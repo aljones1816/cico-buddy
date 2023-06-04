@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import InfoIsland from "./InfoIsland";
 import { iUserLog } from "../api/models/userlog.interface";
+import { useAuth } from "../api/hooks/useAuthContext";
 
 interface CaloriesProps {
   currentLog: iUserLog;
@@ -9,6 +10,7 @@ interface CaloriesProps {
 
 const Calories = ({ currentLog, setCurrentLog }: CaloriesProps) => {
   const [userLog, setUserLog] = useState<iUserLog>(currentLog);
+  const { user } = useAuth();
 
   useEffect(() => {
     setUserLog(currentLog);
@@ -16,6 +18,7 @@ const Calories = ({ currentLog, setCurrentLog }: CaloriesProps) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!user) return;
 
     let breakfast = parseInt(
       (e.currentTarget.elements.namedItem("breakfast") as HTMLInputElement)
@@ -70,10 +73,15 @@ const Calories = ({ currentLog, setCurrentLog }: CaloriesProps) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
         },
         body: generateRequestBody(),
       });
-      const updatedLogResponse = await fetch(`/api/userlog/${userLog._id}`);
+      const updatedLogResponse = await fetch(`/api/userlog/${userLog._id}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
       const updatedLogData = await updatedLogResponse.json();
 
       setCurrentLog(updatedLogData);
@@ -84,11 +92,16 @@ const Calories = ({ currentLog, setCurrentLog }: CaloriesProps) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
         },
         body: generateRequestBody(),
       });
       const userId = await request.json();
-      const latestLogResponse = await fetch(`/api/userlog/${userId._id}`);
+      const latestLogResponse = await fetch(`/api/userlog/${userId._id}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
       const latestLogData = await latestLogResponse.json();
 
       setCurrentLog(latestLogData);
