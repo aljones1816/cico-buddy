@@ -5,11 +5,11 @@ import { useAuth } from "../api/hooks/useAuthContext";
 
 interface CaloriesProps {
   currentLog: iUserLog;
-  setCurrentLog: React.Dispatch<React.SetStateAction<iUserLog>>;
+  setUserLogs: React.Dispatch<React.SetStateAction<iUserLog[]>>;
 }
 
-const Calories = ({ currentLog, setCurrentLog }: CaloriesProps) => {
-  const [userLog, setUserLog] = useState<iUserLog>(currentLog);
+const Calories = ({ currentLog, setUserLogs }: CaloriesProps) => {
+  const [userLog, setUserLog] = useState<iUserLog>({} as iUserLog);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -37,20 +37,30 @@ const Calories = ({ currentLog, setCurrentLog }: CaloriesProps) => {
       (e.currentTarget.elements.namedItem("exercise") as HTMLInputElement).value
     );
 
-    if (!breakfast) {
+    if (isNaN(breakfast)) {
       breakfast = currentLog.breakfast;
+    } else if (breakfast === 0) {
+      breakfast = 0;
     }
-    if (!lunch) {
+    if (isNaN(lunch)) {
       lunch = currentLog.lunch;
+    } else if (lunch === 0) {
+      lunch = 0;
     }
-    if (!dinner) {
+    if (isNaN(dinner)) {
       dinner = currentLog.dinner;
+    } else if (dinner === 0) {
+      dinner = 0;
     }
-    if (!snacks) {
+    if (isNaN(snacks)) {
       snacks = currentLog.snacks;
+    } else if (snacks === 0) {
+      snacks = 0;
     }
-    if (!exercise) {
+    if (isNaN(exercise)) {
       exercise = currentLog.exercise;
+    } else if (exercise === 0) {
+      exercise = 0;
     }
 
     const generateRequestBody = () => {
@@ -77,18 +87,18 @@ const Calories = ({ currentLog, setCurrentLog }: CaloriesProps) => {
         },
         body: generateRequestBody(),
       });
-      const updatedLogResponse = await fetch(`/api/userlog/${userLog._id}`, {
+      const updatedLogResponse = await fetch(`/api/userlog/`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       });
       const updatedLogData = await updatedLogResponse.json();
 
-      setCurrentLog(updatedLogData);
+      setUserLogs(updatedLogData);
     };
 
     const addLog = async () => {
-      const request = await fetch(`/api/userlog/add/`, {
+      await fetch(`/api/userlog/add/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -96,15 +106,15 @@ const Calories = ({ currentLog, setCurrentLog }: CaloriesProps) => {
         },
         body: generateRequestBody(),
       });
-      const userId = await request.json();
-      const latestLogResponse = await fetch(`/api/userlog/${userId._id}`, {
+
+      const updatedLogResponse = await fetch(`/api/userlog/`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       });
-      const latestLogData = await latestLogResponse.json();
+      const updatedLogData = await updatedLogResponse.json();
 
-      setCurrentLog(latestLogData);
+      setUserLogs(updatedLogData);
     };
 
     if (currentLog._id) {
@@ -131,15 +141,40 @@ const Calories = ({ currentLog, setCurrentLog }: CaloriesProps) => {
       <div className="addcalories">
         <form onSubmit={handleSubmit}>
           <label htmlFor="breakfast">Breakfast</label>
-          <input type="number" name="breakfast" id="breakfast" />
+          <input
+            type="number"
+            name="breakfast"
+            id="breakfast"
+            defaultValue={userLog.breakfast}
+          />
           <label htmlFor="lunch">Lunch</label>
-          <input type="number" name="lunch" id="lunch" />
+          <input
+            type="number"
+            name="lunch"
+            id="lunch"
+            defaultValue={userLog.lunch}
+          />
           <label htmlFor="dinner">Dinner</label>
-          <input type="number" name="dinner" id="dinner" />
+          <input
+            type="number"
+            name="dinner"
+            id="dinner"
+            defaultValue={userLog.dinner}
+          />
           <label htmlFor="snacks">Snacks</label>
-          <input type="number" name="snacks" id="snacks" />
+          <input
+            type="number"
+            name="snacks"
+            id="snacks"
+            defaultValue={userLog.snacks}
+          />
           <label htmlFor="exercise">Exercise</label>
-          <input type="number" name="exercise" id="exercise" />
+          <input
+            type="number"
+            name="exercise"
+            id="exercise"
+            defaultValue={userLog.exercise}
+          />
           <button type="submit">Submit</button>
         </form>
       </div>

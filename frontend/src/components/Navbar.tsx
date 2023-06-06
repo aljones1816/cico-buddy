@@ -18,12 +18,6 @@ const Navbar = () => {
               <button onClick={handleLogout}>Log out</button>
             </div>
           )}
-          {!user && (
-            <div>
-              <Link to="/signup">Signup</Link>
-              <Link to="/login">Login</Link>
-            </div>
-          )}
         </nav>
       </div>
     </header>

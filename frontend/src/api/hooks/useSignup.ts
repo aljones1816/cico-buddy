@@ -4,7 +4,7 @@ import { useAuth } from "./useAuthContext";
 export const useSignup = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const { user, login } = useAuth();
+  const { login } = useAuth();
 
   const handleSignup = async (email: string, password: string) => {
     setIsLoading(true);

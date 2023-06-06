@@ -5,11 +5,11 @@ import { useAuth } from "../api/hooks/useAuthContext";
 
 interface WeightProps {
   currentLog: iUserLog;
-  setCurrentLog: React.Dispatch<React.SetStateAction<iUserLog>>;
+  setUserLogs: React.Dispatch<React.SetStateAction<iUserLog[]>>;
 }
 
-const Weight = ({ currentLog, setCurrentLog }: WeightProps) => {
-  const [userLog, setUserLog] = useState<iUserLog>(currentLog);
+const Weight = ({ currentLog, setUserLogs }: WeightProps) => {
+  const [userLog, setUserLog] = useState<iUserLog>({} as iUserLog);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -19,12 +19,12 @@ const Weight = ({ currentLog, setCurrentLog }: WeightProps) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!user) return;
-    let weight = parseInt(
+    let weight = parseFloat(
       (e.currentTarget.elements.namedItem("weight") as HTMLInputElement).value
-    );
+    ).toFixed(1);
 
     if (!weight) {
-      weight = 0;
+      weight = "0";
     }
 
     const generateRequestBody = () => {
@@ -47,18 +47,18 @@ const Weight = ({ currentLog, setCurrentLog }: WeightProps) => {
         },
         body: generateRequestBody(),
       });
-      const updatedLogResponse = await fetch(`/api/userlog/${userLog._id}`, {
+      const updatedLogResponse = await fetch(`/api/userlog/`, {
         headers: {
           Authorization: `Bearer ${user?.token}`,
         },
       });
       const updatedLogData = await updatedLogResponse.json();
 
-      setCurrentLog(updatedLogData);
+      setUserLogs(updatedLogData);
     };
 
     const addLog = async () => {
-      const request = await fetch(`/api/userlog/add`, {
+      await fetch(`/api/userlog/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -66,16 +66,14 @@ const Weight = ({ currentLog, setCurrentLog }: WeightProps) => {
         },
         body: generateRequestBody(),
       });
-      const userId = await request.json();
-
-      const latestLogResponse = await fetch(`/api/userlog/${userId._id}`, {
+      const updatedLogResponse = await fetch(`/api/userlog/`, {
         headers: {
           Authorization: `Bearer ${user?.token}`,
         },
       });
-      const latestLogData = await latestLogResponse.json();
+      const updatedLogData = await updatedLogResponse.json();
 
-      setCurrentLog(latestLogData);
+      setUserLogs(updatedLogData);
     };
     if (!user) return;
     if (currentLog._id) {
@@ -92,7 +90,12 @@ const Weight = ({ currentLog, setCurrentLog }: WeightProps) => {
       <div className="addweight">
         <form onSubmit={handleSubmit}>
           <label htmlFor="weight">Weight</label>
-          <input type="number" name="weight" id="weight" />
+          <input
+            type="string"
+            name="weight"
+            id="weight"
+            defaultValue={userLog.bodyweight}
+          />
           <button type="submit">Submit</button>
         </form>
       </div>

@@ -41,7 +41,7 @@ const useGetUserLogs = () => {
     }
   }, [user]);
 
-  return { isLoading, data, error, setData };
+  return { isLoading, data, error, setData, fetchUserLogs };
 };
 
 export { useGetUserLogs };

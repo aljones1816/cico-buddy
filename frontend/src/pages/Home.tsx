@@ -6,7 +6,12 @@ import { iUserLog } from "../api/models/userlog.interface";
 import { useGetUserLogs } from "../api/hooks/useUserLog";
 
 const Home = () => {
-  const { isLoading, data: userLogs, error } = useGetUserLogs();
+  const {
+    isLoading,
+    data: userLogs,
+    setData: setUserLogs,
+    error,
+  } = useGetUserLogs();
 
   const [currentLog, setCurrentLog] = useState<iUserLog>({
     _id: "",
@@ -39,10 +44,10 @@ const Home = () => {
   return (
     <>
       {currentLog && (
-        <Calories currentLog={currentLog} setCurrentLog={setCurrentLog} />
+        <Calories currentLog={currentLog} setUserLogs={setUserLogs} />
       )}
       {currentLog && (
-        <Weight currentLog={currentLog} setCurrentLog={setCurrentLog} />
+        <Weight currentLog={currentLog} setUserLogs={setUserLogs} />
       )}
       {userLogs && <History userLogs={userLogs} />}
     </>
