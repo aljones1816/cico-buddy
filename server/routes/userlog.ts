@@ -6,10 +6,11 @@ import {
   getUserlogById,
   updateUserlogById,
 } from "../controllers/userlog.controller.ts";
-import requireAuth from "../middleware/requireauth.ts";
+import requireAuth from "../middleware/requireAuth.ts";
 
 const router = Router();
 
+// require auth for all routes
 router.use(requireAuth);
 
 router.get("/", getUserlogs);

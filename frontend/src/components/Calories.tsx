@@ -88,7 +88,7 @@ const Calories = ({ currentLog, setCurrentLog }: CaloriesProps) => {
     };
 
     const addLog = async () => {
-      const request = await fetch(`/api/userlog/add`, {
+      const request = await fetch(`/api/userlog/add/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

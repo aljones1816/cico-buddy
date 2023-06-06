@@ -1,20 +1,22 @@
 import { Userlog } from "../models/userlog.model.ts";
 import { Request, Response } from "express";
 import Mongoose from "mongoose";
+import { AuthenticatedRequest } from "../middleware/requireAuth.ts";
 
 // get all userlogs
-const getUserlogs = async (req: Request, res: Response) => {
-  console.log(req);
+const getUserlogs = async (req: AuthenticatedRequest, res: Response) => {
+  const user_id = req.user;
   try {
-    const userlogs = await Userlog.find();
+    const userlogs = await Userlog.find({ user_id });
     res.status(200).json(userlogs);
   } catch (err) {
-    res.status(400).json(`Error: ${err}`);
+    res.status(400).json(`Oh man big time Error: ${err}`);
   }
 };
 
 // create new userlog
-const createUserlog = async (req: Request, res: Response) => {
+const createUserlog = async (req: AuthenticatedRequest, res: Response) => {
+  const user_id = req.user;
   const email = req.body.email;
   const breakfast = req.body.breakfast ? req.body.breakfast : 0;
   const lunch = req.body.lunch ? req.body.lunch : 0;
@@ -24,6 +26,7 @@ const createUserlog = async (req: Request, res: Response) => {
   const bodyweight = req.body.bodyweight ? req.body.bodyweight : 0;
   try {
     const newUserlog = await Userlog.create({
+      user_id,
       email,
       breakfast,
       lunch,

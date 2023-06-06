@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.ts";
+import { Types } from "mongoose";
 
-interface AuthenticatedRequest extends Request {
-  user?: string;
+export interface AuthenticatedRequest extends Request {
+  user?: Types.ObjectId;
 }
 
 const requireAuth = async (

@@ -12,6 +12,7 @@ const userlogSchema = new Schema(
     exercise: { type: Number, default: 0 },
     bodyweight: { type: Number, default: 0 },
     date: { type: Date, default: Date.now },
+    user_id: { type: String, required: true },
   },
   {
     timestamps: true,

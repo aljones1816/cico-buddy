@@ -8,4 +8,5 @@ export interface iUserLog {
   exercise: number;
   bodyweight: number;
   date: Date;
+  user_id: string;
 }

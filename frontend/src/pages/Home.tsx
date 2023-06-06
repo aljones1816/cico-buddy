@@ -18,6 +18,7 @@ const Home = () => {
     snacks: 0,
     exercise: 0,
     bodyweight: 0,
+    user_id: "",
   });
 
   useEffect(() => {
