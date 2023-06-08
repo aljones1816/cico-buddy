@@ -127,17 +127,19 @@ const Calories = ({ currentLog, setUserLogs }: CaloriesProps) => {
   return (
     <>
       <h1>Calories</h1>
-      <InfoIsland
-        number={
-          1800 -
-          (userLog.breakfast +
-            userLog.lunch +
-            userLog.dinner +
-            userLog.snacks -
-            userLog.exercise)
-        }
-        string="Calories remaining"
-      ></InfoIsland>
+      {user && (
+        <InfoIsland
+          number={
+            user.calorie_goal -
+            (userLog.breakfast +
+              userLog.lunch +
+              userLog.dinner +
+              userLog.snacks -
+              userLog.exercise)
+          }
+          string="Calories remaining"
+        ></InfoIsland>
+      )}
       <div className="addcalories">
         <form onSubmit={handleSubmit}>
           <label htmlFor="breakfast">Breakfast</label>

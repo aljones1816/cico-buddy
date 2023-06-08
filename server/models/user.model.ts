@@ -7,6 +7,9 @@ const Schema = mongoose.Schema;
 interface IUser extends Document {
   email: string;
   password: string;
+  name: string;
+  age: number;
+  calorie_goal: number;
 }
 
 const userSchema = new Schema({
@@ -19,6 +22,18 @@ const userSchema = new Schema({
     type: String,
     required: true,
     hash: true,
+  },
+  name: {
+    type: String,
+    default: "",
+  },
+  age: {
+    type: Number,
+    default: null,
+  },
+  calorie_goal: {
+    type: Number,
+    default: 2000,
   },
 });
 

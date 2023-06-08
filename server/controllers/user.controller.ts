@@ -1,6 +1,7 @@
 import { User, IUser } from "../models/user.model.ts";
 import { Request, Response } from "express";
 import jsonwebtoken from "jsonwebtoken";
+import { AuthenticatedRequest } from "../middleware/requireAuth.ts";
 
 const createToken = (_id: string) => {
   return jsonwebtoken.sign({ _id }, process.env.SECRET!, { expiresIn: "3d" });
@@ -16,17 +17,16 @@ const loginUser = async (req: Request, res: Response) => {
       }
     ).login(email, password);
 
+    // get additional fields from the document
+    const { name, age, calorie_goal } = user;
     // create a token
     const token = createToken(user._id);
 
-    res.status(200).json({ email, token });
+    res.status(200).json({ email, token, name, age, calorie_goal });
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
 };
-
-// logout user
-//const logoutUser = async (req: Request, res: Response) => {};
 
 // signup user
 const signupUser = async (req: Request, res: Response) => {
@@ -38,13 +38,37 @@ const signupUser = async (req: Request, res: Response) => {
       }
     ).signup(email, password);
 
+    const { name, age, calorie_goal } = user;
+
     // create a token
     const token = createToken(user._id);
 
-    res.status(200).json({ email, token });
+    res.status(200).json({ email, token, name, age, calorie_goal });
   } catch (err) {
     res.status(400).json(`Error: ${err}`);
   }
 };
+
+// update user
+const updateUserByID = async (req: AuthenticatedRequest, res: Response) => {
+  const user_id = req.user;
+
+  try {
+    await User.findByIdAndUpdate(user_id, {
+      ...req.body,
+    });
+    const user = (await User.findById(user_id)) as IUser;
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    const { email, name, age, calorie_goal } = user;
+    const token = createToken(user._id);
+    res.status(200).json({ email, token, name, age, calorie_goal });
+  } catch (err) {
+    res.status(400).json(`Error: ${err}`);
+  }
+};
+
 //export default controller;
-export { signupUser, loginUser };
+export { signupUser, loginUser, updateUserByID };
