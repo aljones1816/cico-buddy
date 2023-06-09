@@ -24,7 +24,7 @@ const loginUser = async (req: Request, res: Response) => {
 
     res.status(200).json({ email, token, name, age, calorie_goal });
   } catch (err) {
-    res.status(400).json(`Error: ${err}`);
+    res.status(400).json({ error: `${err}` });
   }
 };
 
@@ -45,7 +45,7 @@ const signupUser = async (req: Request, res: Response) => {
 
     res.status(200).json({ email, token, name, age, calorie_goal });
   } catch (err) {
-    res.status(400).json(`Error: ${err}`);
+    res.status(400).json({ error: `${err}` });
   }
 };
 
@@ -66,7 +66,7 @@ const updateUserByID = async (req: AuthenticatedRequest, res: Response) => {
     const token = createToken(user._id);
     res.status(200).json({ email, token, name, age, calorie_goal });
   } catch (err) {
-    res.status(400).json(`Error: ${err}`);
+    res.status(400).json({ error: `${err}` });
   }
 };
 

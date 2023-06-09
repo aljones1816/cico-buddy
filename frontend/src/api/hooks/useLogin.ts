@@ -22,7 +22,7 @@ export const useLogin = () => {
         localStorage.setItem("user", JSON.stringify(data));
         login(data);
       } else {
-        setError(data.message);
+        setError(data.error);
       }
     } catch (err) {
       if (typeof err === "string") {

@@ -72,7 +72,7 @@ const getUserlogById = async (req: Request, res: Response) => {
     }
     res.status(200).json(userlog);
   } catch (err) {
-    res.status(400).json(`Error: ${err}`);
+    res.status(400).json(`{Error: ${err}}`);
   }
 };
 

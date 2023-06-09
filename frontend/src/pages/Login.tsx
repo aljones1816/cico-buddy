@@ -1,17 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLogin } from "../api/hooks/useLogin";
 import { Link } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { handleLogin } = useLogin();
+  const { handleLogin, error } = useLogin();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     handleLogin(email, password);
   };
+
+  useEffect(() => {
+    console.log(error);
+  }, [error]);
 
   return (
     <>
@@ -34,6 +38,7 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit">Login</button>
+        {error && <p>{error}</p>}
       </form>
       <div>
         <p>

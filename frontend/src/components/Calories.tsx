@@ -123,7 +123,6 @@ const Calories = ({ currentLog, setUserLogs }: CaloriesProps) => {
       await addLog();
     }
   };
-
   return (
     <>
       <h1>Calories</h1>
