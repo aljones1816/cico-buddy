@@ -1,9 +1,14 @@
 import { useAuth } from "../api/hooks/useAuthContext";
 import { useState } from "react";
+import { useLogout } from "../api/hooks/useLogout";
+import { Button } from "@chakra-ui/react";
+import { IconArrowBack, IconArrowBigLeftFilled } from "@tabler/icons-react";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const { user, login } = useAuth();
   const [editMode, setEditMode] = useState<boolean>(false);
+  const { handleLogout } = useLogout();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -61,11 +66,16 @@ const Profile = () => {
             </form>
           ) : (
             <div>
+              <Link to="/">
+                <IconArrowBigLeftFilled />
+              </Link>
+
               <h2>Hi, {user.name}!</h2>
               <p>Your daily calorie goal is: {user.calorie_goal}</p>
               <button onClick={() => setEditMode(true)}>Edit</button>
             </div>
           )}
+          <Button onClick={handleLogout}>Log out</Button>
         </div>
       )}
     </>

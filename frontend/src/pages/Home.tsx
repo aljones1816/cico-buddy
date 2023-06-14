@@ -4,6 +4,10 @@ import Weight from "../components/Weight";
 import History from "../components/History";
 import { iUserLog } from "../api/models/userlog.interface";
 import { useGetUserLogs } from "../api/hooks/useUserLog";
+import Navfooter from "../components/Navfooter";
+import { set } from "mongoose";
+import Navbar from "../components/Navbar";
+import { VStack, Spacer, Flex } from "@chakra-ui/react";
 
 const Home = () => {
   const {
@@ -26,6 +30,14 @@ const Home = () => {
     user_id: "",
   });
 
+  const [isCalories, setIsCalories] = useState<boolean>(false);
+  const [isWeight, setIsWeight] = useState<boolean>(false);
+  const [isHistory, setIsHistory] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsCalories(true);
+  }, []);
+
   useEffect(() => {
     if (userLogs) {
       const todayString = new Date().toDateString();
@@ -42,15 +54,29 @@ const Home = () => {
   if (isLoading) return <h1>Loading...</h1>;
   if (error) return <h1>Something went wrong!</h1>;
   return (
-    <>
-      {currentLog && (
+    <VStack minH="100vh" minW="100vw">
+      <Navbar
+        isCalories={isCalories}
+        isWeight={isWeight}
+        isHistory={isHistory}
+      />
+      {currentLog && isCalories && (
         <Calories currentLog={currentLog} setUserLogs={setUserLogs} />
       )}
-      {currentLog && (
+      {currentLog && isWeight && (
         <Weight currentLog={currentLog} setUserLogs={setUserLogs} />
       )}
-      {userLogs && <History userLogs={userLogs} />}
-    </>
+      {userLogs && isHistory && <History userLogs={userLogs} />}
+      <Spacer />
+      <Navfooter
+        isCalorie={isCalories}
+        isWeight={isWeight}
+        isHistory={isHistory}
+        setIsCalorie={setIsCalories}
+        setIsWeight={setIsWeight}
+        setIsHistory={setIsHistory}
+      />
+    </VStack>
   );
 };
 

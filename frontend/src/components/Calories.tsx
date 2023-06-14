@@ -125,7 +125,6 @@ const Calories = ({ currentLog, setUserLogs }: CaloriesProps) => {
   };
   return (
     <>
-      <h1>Calories</h1>
       {user && (
         <InfoIsland
           number={

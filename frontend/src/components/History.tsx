@@ -1,4 +1,5 @@
 import { iUserLog } from "../api/models/userlog.interface";
+import { Card, CardBody, CardHeader } from "@chakra-ui/react";
 
 interface HistoryProps {
   userLogs: iUserLog[];
@@ -7,32 +8,22 @@ interface HistoryProps {
 const History = ({ userLogs }: HistoryProps) => {
   return (
     <>
-      <h1>History</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Calories</th>
-            <th>Weight</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {userLogs.map((userLog: iUserLog, index) => (
-            <tr key={index}>
-              <td>{new Date(userLog.date).toDateString()}</td>
-              <td>
-                {userLog.breakfast +
-                  userLog.lunch +
-                  userLog.dinner +
-                  userLog.snacks -
-                  userLog.exercise}
-              </td>
-              <td>{userLog.bodyweight}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {userLogs.map((userLog: iUserLog, index) => (
+        <Card w="100%" key={index}>
+          <CardHeader>{new Date(userLog.date).toDateString()}</CardHeader>
+          <CardBody>
+            <p>
+              Calories eaten:
+              {userLog.breakfast +
+                userLog.lunch +
+                userLog.dinner +
+                userLog.snacks}
+            </p>
+            <p>Exercise: {userLog.exercise}</p>
+            <p>Bodyweight: {userLog.bodyweight}</p>
+          </CardBody>
+        </Card>
+      ))}
     </>
   );
 };

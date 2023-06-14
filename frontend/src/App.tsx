@@ -1,19 +1,19 @@
 // import pages and components
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
-import Navbar from "./components/Navbar";
+
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import { useAuth } from "./api/hooks/useAuthContext";
+import { Box } from "@chakra-ui/react";
 
 function App() {
   const { user } = useAuth();
   return (
-    <div className="App">
+    <Box className="App">
       <BrowserRouter>
         <div className="pages">
-          <Navbar />
           <Routes>
             <Route
               path="/"
@@ -34,7 +34,7 @@ function App() {
           </Routes>
         </div>
       </BrowserRouter>
-    </div>
+    </Box>
   );
 }
 

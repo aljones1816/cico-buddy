@@ -1,5 +1,5 @@
 // component should take in a prop that contains a number and a string and displays them, e.g.: Calories: 1800
-
+import { Card, CardBody } from "@chakra-ui/react";
 interface InfoIslandProps {
   number: number;
   string: string;
@@ -7,11 +7,17 @@ interface InfoIslandProps {
 
 const InfoIsland = ({ number, string }: InfoIslandProps) => {
   return (
-    <div className="info-island">
-      <p>
+    <Card
+      bg="gray.600"
+      color="white"
+      borderTop="8px"
+      borderColor="green.300"
+      className="info-island"
+    >
+      <CardBody>
         {string}: {number}
-      </p>
-    </div>
+      </CardBody>
+    </Card>
   );
 };
 
