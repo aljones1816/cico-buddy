@@ -44,7 +44,7 @@ const Weight = ({ currentLog, setUserLogs }: WeightProps) => {
 
     const cleanData = {
       ...data,
-      bodyweight: data.weight || "0",
+      bodyweight: Math.round(data.weight * 10) / 10 || "0",
     };
 
     const res = await fetch(requestUrl, {
@@ -76,7 +76,7 @@ const Weight = ({ currentLog, setUserLogs }: WeightProps) => {
         <FormControl id="weight">
           <FormLabel htmlFor="weight">Weight</FormLabel>
           <Input
-            type="string"
+            type="float"
             id="weight"
             defaultValue={userLog.bodyweight}
             {...register("weight")}
