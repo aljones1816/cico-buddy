@@ -5,9 +5,10 @@ import History from "../components/History";
 import { iUserLog } from "../api/models/userlog.interface";
 import { useGetUserLogs } from "../api/hooks/useUserLog";
 import Navfooter from "../components/Navfooter";
-import { set } from "mongoose";
+import { useUserData } from "../api/hooks/useUserDataContext";
+
 import Navbar from "../components/Navbar";
-import { VStack, Spacer, Flex } from "@chakra-ui/react";
+import { VStack, Spacer } from "@chakra-ui/react";
 
 const Home = () => {
   const {
@@ -16,6 +17,14 @@ const Home = () => {
     setData: setUserLogs,
     error,
   } = useGetUserLogs();
+
+  const { userLogs: userData } = useUserData();
+
+  useEffect(() => {
+    if (userData) {
+      console.log("the logs currently is: ", userData);
+    }
+  }, [userData]);
 
   const [currentLog, setCurrentLog] = useState<iUserLog>({
     _id: "",
@@ -54,7 +63,7 @@ const Home = () => {
   if (isLoading) return <h1>Loading...</h1>;
   if (error) return <h1>Something went wrong!</h1>;
   return (
-    <VStack minH="100vh" minW="100vw">
+    <VStack minH="100vh" minW="100vw" align="center" bg="black">
       <Navbar
         isCalories={isCalories}
         isWeight={isWeight}
@@ -66,7 +75,7 @@ const Home = () => {
       {currentLog && isWeight && (
         <Weight currentLog={currentLog} setUserLogs={setUserLogs} />
       )}
-      {userLogs && isHistory && <History userLogs={userLogs} />}
+      {userLogs && isHistory && <History />}
       <Spacer />
       <Navfooter
         isCalorie={isCalories}

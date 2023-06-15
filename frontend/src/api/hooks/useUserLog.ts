@@ -2,12 +2,14 @@ const url = "/api/userlog";
 import { useEffect, useState } from "react";
 import { iUserLog } from "../models/userlog.interface";
 import { useAuth } from "./useAuthContext";
+import { useUserData } from "./useUserDataContext";
 
 const useGetUserLogs = () => {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<iUserLog[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const { setUserLogs } = useUserData();
 
   const fetchUserLogs = async () => {
     setIsLoading(true);
@@ -22,6 +24,7 @@ const useGetUserLogs = () => {
       const data = (await res.json()) as iUserLog[];
       if (res.ok) {
         setData(data);
+        setUserLogs(data);
       }
       // update after I decide backend error handling
     } catch (err) {

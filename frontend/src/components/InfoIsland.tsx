@@ -10,9 +10,14 @@ const InfoIsland = ({ number, string }: InfoIslandProps) => {
     <Card
       bg="gray.600"
       color="white"
-      borderTop="8px"
+      borderTop="8px solid"
       borderColor="green.300"
       className="info-island"
+      h="100"
+      textAlign="center"
+      borderRadius="xl"
+      fontSize="2xl"
+      m="5"
     >
       <CardBody>
         {string}: {number}

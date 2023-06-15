@@ -2,129 +2,86 @@ import { useEffect, useState } from "react";
 import InfoIsland from "./InfoIsland";
 import { iUserLog } from "../api/models/userlog.interface";
 import { useAuth } from "../api/hooks/useAuthContext";
+import { useForm, SubmitHandler } from "react-hook-form";
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Box,
+  VStack,
+  HStack,
+  Text,
+} from "@chakra-ui/react";
 
 interface CaloriesProps {
   currentLog: iUserLog;
   setUserLogs: React.Dispatch<React.SetStateAction<iUserLog[]>>;
 }
 
+interface CaloriesFormInput {
+  breakfast: number;
+  lunch: number;
+  dinner: number;
+  snacks: number;
+  exercise: number;
+}
+
 const Calories = ({ currentLog, setUserLogs }: CaloriesProps) => {
   const [userLog, setUserLog] = useState<iUserLog>({} as iUserLog);
   const { user } = useAuth();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CaloriesFormInput>();
 
   useEffect(() => {
     setUserLog(currentLog);
   }, [currentLog]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit: SubmitHandler<CaloriesFormInput> = async (data) => {
     if (!user) return;
 
-    let breakfast = parseInt(
-      (e.currentTarget.elements.namedItem("breakfast") as HTMLInputElement)
-        .value
-    );
-    let lunch = parseInt(
-      (e.currentTarget.elements.namedItem("lunch") as HTMLInputElement).value
-    );
-    let dinner = parseInt(
-      (e.currentTarget.elements.namedItem("dinner") as HTMLInputElement).value
-    );
-    let snacks = parseInt(
-      (e.currentTarget.elements.namedItem("snacks") as HTMLInputElement).value
-    );
-    let exercise = parseInt(
-      (e.currentTarget.elements.namedItem("exercise") as HTMLInputElement).value
-    );
+    const isNewLog = !currentLog._id;
 
-    if (isNaN(breakfast)) {
-      breakfast = currentLog.breakfast;
-    } else if (breakfast === 0) {
-      breakfast = 0;
-    }
-    if (isNaN(lunch)) {
-      lunch = currentLog.lunch;
-    } else if (lunch === 0) {
-      lunch = 0;
-    }
-    if (isNaN(dinner)) {
-      dinner = currentLog.dinner;
-    } else if (dinner === 0) {
-      dinner = 0;
-    }
-    if (isNaN(snacks)) {
-      snacks = currentLog.snacks;
-    } else if (snacks === 0) {
-      snacks = 0;
-    }
-    if (isNaN(exercise)) {
-      exercise = currentLog.exercise;
-    } else if (exercise === 0) {
-      exercise = 0;
-    }
+    const requestUrl = isNewLog
+      ? "/api/userlog/add"
+      : `/api/userlog/update/${userLog._id}`;
 
-    const generateRequestBody = () => {
-      try {
-        return JSON.stringify({
-          email: "email@gmail.com",
-          breakfast: breakfast,
-          lunch: lunch,
-          dinner: dinner,
-          snacks: snacks,
-          exercise: exercise,
-        });
-      } catch (error) {
-        console.log(error);
-      }
+    const cleanData = {
+      ...data,
+      email: user.email,
+      breakfast: data.breakfast || "0",
+      lunch: data.lunch || "0",
+      dinner: data.dinner || "0",
+      snacks: data.snacks || "0",
+      exercise: data.exercise || "0",
     };
 
-    const updateLog = async () => {
-      await fetch(`/api/userlog/update/${userLog._id}`, {
-        method: "POST",
+    const res = await fetch(requestUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+      body: JSON.stringify(cleanData),
+    });
+
+    if (res.ok) {
+      const updatedLogResponse = await fetch("/api/userlog/", {
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-        body: generateRequestBody(),
-      });
-      const updatedLogResponse = await fetch(`/api/userlog/`, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${user?.token}`,
         },
       });
       const updatedLogData = await updatedLogResponse.json();
 
       setUserLogs(updatedLogData);
-    };
-
-    const addLog = async () => {
-      await fetch(`/api/userlog/add/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-        body: generateRequestBody(),
-      });
-
-      const updatedLogResponse = await fetch(`/api/userlog/`, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
-      const updatedLogData = await updatedLogResponse.json();
-
-      setUserLogs(updatedLogData);
-    };
-
-    if (currentLog._id) {
-      await updateLog();
-    } else {
-      await addLog();
     }
   };
+
   return (
-    <>
+    <VStack minH="100vh" minW="100vw" pb="80px">
       {user && (
         <InfoIsland
           number={
@@ -138,47 +95,82 @@ const Calories = ({ currentLog, setUserLogs }: CaloriesProps) => {
           string="Calories remaining"
         ></InfoIsland>
       )}
-      <div className="addcalories">
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="breakfast">Breakfast</label>
-          <input
-            type="number"
-            name="breakfast"
-            id="breakfast"
-            defaultValue={userLog.breakfast}
-          />
-          <label htmlFor="lunch">Lunch</label>
-          <input
-            type="number"
-            name="lunch"
-            id="lunch"
-            defaultValue={userLog.lunch}
-          />
-          <label htmlFor="dinner">Dinner</label>
-          <input
-            type="number"
-            name="dinner"
-            id="dinner"
-            defaultValue={userLog.dinner}
-          />
-          <label htmlFor="snacks">Snacks</label>
-          <input
-            type="number"
-            name="snacks"
-            id="snacks"
-            defaultValue={userLog.snacks}
-          />
-          <label htmlFor="exercise">Exercise</label>
-          <input
-            type="number"
-            name="exercise"
-            id="exercise"
-            defaultValue={userLog.exercise}
-          />
-          <button type="submit">Submit</button>
-        </form>
-      </div>
-    </>
+
+      <Box as="form" onSubmit={handleSubmit(onSubmit)} color="whiteAlpha.800">
+        <VStack align="start" spacing="2">
+          <HStack spacing="2" align="end">
+            <Text color="whiteAlpha.600">Calories</Text>
+            <Text color="whiteAlpha.600">Protein</Text>
+          </HStack>
+          <FormControl id="calories">
+            <HStack spacing="2" mb="4">
+              <FormLabel htmlFor="breakfast" fontWeight="bold" fontSize="xl">
+                Breakfast
+              </FormLabel>
+
+              <Input
+                type="number"
+                id="breakfast"
+                defaultValue={userLog.breakfast}
+                {...register("breakfast")}
+              />
+            </HStack>
+
+            <HStack spacing="2" mb="4">
+              <FormLabel htmlFor="lunch" fontWeight="bold" fontSize="xl">
+                Lunch
+              </FormLabel>
+              <Input
+                type="number"
+                id="lunch"
+                defaultValue={userLog.lunch}
+                {...register("lunch")}
+              />
+            </HStack>
+
+            <HStack spacing="2" mb="4">
+              <FormLabel htmlFor="dinner" fontWeight="bold" fontSize="xl">
+                Dinner
+              </FormLabel>
+              <Input
+                type="number"
+                id="dinner"
+                defaultValue={userLog.dinner}
+                {...register("dinner")}
+              />
+            </HStack>
+
+            <HStack spacing="2" mb="4">
+              <FormLabel htmlFor="snacks" fontWeight="bold" fontSize="xl">
+                Snacks
+              </FormLabel>
+              <Input
+                type="number"
+                id="snacks"
+                defaultValue={userLog.snacks}
+                {...register("snacks")}
+              />
+            </HStack>
+
+            <HStack spacing="2" mb="4">
+              <FormLabel htmlFor="exercise" fontWeight="bold" fontSize="xl">
+                Exercise
+              </FormLabel>
+              <Input
+                type="number"
+                id="exercise"
+                defaultValue={userLog.exercise}
+                {...register("exercise")}
+              />
+            </HStack>
+          </FormControl>
+        </VStack>
+
+        <Button type="submit" colorScheme="green">
+          Submit
+        </Button>
+      </Box>
+    </VStack>
   );
 };
 

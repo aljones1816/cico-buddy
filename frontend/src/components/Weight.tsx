@@ -8,8 +8,14 @@ import {
   FormControl,
   FormLabel,
   Input,
-  NumberInput,
+  Box,
+  VStack,
+  Editable,
+  EditableInput,
+  EditablePreview,
+  HStack,
 } from "@chakra-ui/react";
+import WeightHistory from "./WeightHistory";
 
 interface WeightProps {
   currentLog: iUserLog;
@@ -17,7 +23,7 @@ interface WeightProps {
 }
 
 interface WeightFormInput {
-  weight: number;
+  bodyweight: number;
 }
 
 const Weight = ({ currentLog, setUserLogs }: WeightProps) => {
@@ -44,7 +50,8 @@ const Weight = ({ currentLog, setUserLogs }: WeightProps) => {
 
     const cleanData = {
       ...data,
-      bodyweight: Math.round(data.weight * 10) / 10 || "0",
+      email: "email@email.com",
+      bodyweight: Math.round(data.bodyweight * 10) / 10 || "0",
     };
 
     const res = await fetch(requestUrl, {
@@ -69,22 +76,31 @@ const Weight = ({ currentLog, setUserLogs }: WeightProps) => {
   };
 
   return (
-    <>
+    <VStack align="center" spacing="4">
       <InfoIsland number={userLog.bodyweight} string="Today's weight" />
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl id="weight">
-          <FormLabel htmlFor="weight">Weight</FormLabel>
-          <Input
-            type="float"
-            id="weight"
-            defaultValue={userLog.bodyweight}
-            {...register("weight")}
-          />
-          <Button type="submit">Submit</Button>
-        </FormControl>
-      </form>
-    </>
+      <Box as="form" onSubmit={handleSubmit(onSubmit)} color="whiteAlpha.800">
+        <VStack align="start" spacing="2">
+          <HStack spacing="2" mb="4">
+            <FormLabel htmlFor="bodyweight" fontWeight="bold" fontSize="xl">
+              Weight:
+            </FormLabel>
+
+            <Input
+              type="float"
+              id="bodyweight"
+              defaultValue={userLog.bodyweight}
+              {...register("bodyweight")}
+            />
+          </HStack>
+        </VStack>
+
+        <Button type="submit" colorScheme="green">
+          Submit
+        </Button>
+      </Box>
+      <WeightHistory />
+    </VStack>
   );
 };
 
