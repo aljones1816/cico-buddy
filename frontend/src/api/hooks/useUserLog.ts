@@ -9,7 +9,7 @@ const useGetUserLogs = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<iUserLog[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const { setUserLogs } = useUserData();
+  const { setUserLogs, setCurrentUserLog } = useUserData();
 
   const fetchUserLogs = async () => {
     setIsLoading(true);
@@ -23,7 +23,27 @@ const useGetUserLogs = () => {
       });
       const data = (await res.json()) as iUserLog[];
       if (res.ok) {
-        setData(data);
+        const todayString = new Date().toDateString();
+        const todayLog = data.find((log) => {
+          return new Date(log.date).toDateString() === todayString;
+        });
+
+        if (todayLog) {
+          setCurrentUserLog(todayLog);
+        } else {
+          setCurrentUserLog({
+            _id: "",
+            email: "",
+            date: new Date(),
+            breakfast: 0,
+            lunch: 0,
+            dinner: 0,
+            snacks: 0,
+            exercise: 0,
+            bodyweight: 0,
+            user_id: "",
+          });
+        }
         setUserLogs(data);
       }
       // update after I decide backend error handling

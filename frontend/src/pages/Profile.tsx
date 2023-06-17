@@ -2,7 +2,7 @@ import { useAuth } from "../api/hooks/useAuthContext";
 import { useState } from "react";
 import { useLogout } from "../api/hooks/useLogout";
 import { Button } from "@chakra-ui/react";
-import { IconArrowBack, IconArrowBigLeftFilled } from "@tabler/icons-react";
+import { IconArrowBigLeftFilled } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 
 const Profile = () => {

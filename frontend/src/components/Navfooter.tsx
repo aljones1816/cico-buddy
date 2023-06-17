@@ -1,5 +1,5 @@
-import { Flex, Box } from "@chakra-ui/react";
-import { IconSalad, IconScaleOutline, IconHistory } from "@tabler/icons-react";
+import { Flex, Box, useBreakpointValue } from "@chakra-ui/react";
+
 import { BowlFood, Scales, Calendar } from "@phosphor-icons/react";
 
 interface NavfooterProps {
@@ -19,25 +19,29 @@ const Navfooter = ({
   setIsWeight,
   setIsHistory,
 }: NavfooterProps) => {
+  const iconSize = useBreakpointValue({
+    base: "32",
+    md: "24",
+    lg: "24",
+    sm: "24",
+  });
+
   return (
     <Flex
-      position="fixed"
-      bottom="0"
-      left="0"
-      right="0"
       bg="gray.200"
       minW="100%"
       justifyContent="space-between"
       p="20px"
+      alignItems="center"
     >
       <Box
-        _hover={{ backgroundColor: "gray.400", borderRadiu: "50%" }}
+        _hover={{ backgroundColor: "gray.400", borderRadius: "50%" }}
         bg={isCalorie ? "gray.400" : "transparent"}
         borderRadius="50%"
         padding="5px"
       >
         <BowlFood
-          size={32}
+          size={iconSize}
           onClick={() => {
             setIsCalorie(true);
             setIsWeight(false);
@@ -46,13 +50,13 @@ const Navfooter = ({
         />
       </Box>
       <Box
-        _hover={{ backgroundColor: "gray.400", borderRadiu: "50%" }}
+        _hover={{ backgroundColor: "gray.400", borderRadius: "50%" }}
         bg={isWeight ? "gray.400" : "transparent"}
         borderRadius="50%"
         padding="5px"
       >
         <Scales
-          size={32}
+          size={iconSize}
           onClick={() => {
             setIsWeight(true);
             setIsCalorie(false);
@@ -61,13 +65,13 @@ const Navfooter = ({
         />
       </Box>
       <Box
-        _hover={{ backgroundColor: "gray.400", borderRadiu: "50%" }}
+        _hover={{ backgroundColor: "gray.400", borderRadius: "50%" }}
         bg={isHistory ? "gray.400" : "transparent"}
         borderRadius="50%"
         padding="5px"
       >
         <Calendar
-          size={32}
+          size={iconSize}
           onClick={() => {
             setIsHistory(true);
             setIsWeight(false);

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { Avatar, AvatarBadge, AvatarGroup } from "@chakra-ui/react";
+import { Avatar } from "@chakra-ui/react";
 import { useAuth } from "../api/hooks/useAuthContext";
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex, Heading, useBreakpointValue } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 interface NavbarProps {
@@ -13,6 +13,12 @@ interface NavbarProps {
 const Navbar = ({ isCalories, isWeight, isHistory }: NavbarProps) => {
   const { user } = useAuth();
   const [headerText, setHeaderText] = useState<string>("");
+  const avatarSize = useBreakpointValue({
+    base: "md",
+    lg: "sm",
+    sm: "sm",
+    xs: "xs",
+  });
 
   useEffect(() => {
     if (isCalories) {
@@ -37,7 +43,7 @@ const Navbar = ({ isCalories, isWeight, isHistory }: NavbarProps) => {
 
       {user && (
         <Link to="/profile">
-          <Avatar bg="teal.600" />
+          <Avatar bg="teal.600" size={avatarSize} />
         </Link>
       )}
     </Flex>

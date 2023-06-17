@@ -1,52 +1,47 @@
+import { useEffect, useState } from "react";
 import InfoIsland from "./InfoIsland";
-import { iUserLog } from "../api/models/userlog.interface";
-import { useState, useEffect } from "react";
 import { useAuth } from "../api/hooks/useAuthContext";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useUserData } from "../api/hooks/useUserDataContext";
+import { useGetUserLogs } from "../api/hooks/useUserLog";
 import {
   Button,
-  FormControl,
   FormLabel,
   Input,
   Box,
   VStack,
-  Editable,
-  EditableInput,
-  EditablePreview,
   HStack,
 } from "@chakra-ui/react";
 import WeightHistory from "./WeightHistory";
-
-interface WeightProps {
-  currentLog: iUserLog;
-  setUserLogs: React.Dispatch<React.SetStateAction<iUserLog[]>>;
-}
 
 interface WeightFormInput {
   bodyweight: number;
 }
 
-const Weight = ({ currentLog, setUserLogs }: WeightProps) => {
-  const [userLog, setUserLog] = useState<iUserLog>({} as iUserLog);
+const Weight = () => {
   const { user } = useAuth();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<WeightFormInput>();
+  const { fetchUserLogs } = useGetUserLogs();
+  const { currentUserLog } = useUserData();
+  const { register, handleSubmit } = useForm<WeightFormInput>();
+  const [hasCurrentLog, setHasCurrentLog] = useState<boolean>(false);
 
   useEffect(() => {
-    setUserLog(currentLog);
-  }, [currentLog]);
+    if (!currentUserLog?._id) {
+      setHasCurrentLog(false);
+    }
+    if (currentUserLog?._id) {
+      setHasCurrentLog(true);
+    }
+  }, [currentUserLog]);
 
   const onSubmit: SubmitHandler<WeightFormInput> = async (data) => {
     if (!user) return;
 
-    const isNewLog = !currentLog._id;
+    const isNewLog = !currentUserLog?._id;
 
     const requestUrl = isNewLog
       ? "/api/userlog/add"
-      : `/api/userlog/update/${userLog._id}`;
+      : `/api/userlog/update/${currentUserLog._id}`;
 
     const cleanData = {
       ...data,
@@ -64,20 +59,18 @@ const Weight = ({ currentLog, setUserLogs }: WeightProps) => {
     });
 
     if (res.ok) {
-      const updatedLogResponse = await fetch("/api/userlog/", {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
-        },
-      });
-      const updatedLogData = await updatedLogResponse.json();
-
-      setUserLogs(updatedLogData);
+      fetchUserLogs();
     }
   };
 
+  if (!currentUserLog) return <div>Loading...</div>;
   return (
     <VStack align="center" spacing="4">
-      <InfoIsland number={userLog.bodyweight} string="Today's weight" />
+      <InfoIsland
+        number={currentUserLog.bodyweight}
+        string="Today's weight"
+        hasCurrentLog={hasCurrentLog}
+      />
 
       <Box as="form" onSubmit={handleSubmit(onSubmit)} color="whiteAlpha.800">
         <VStack align="start" spacing="2">
@@ -89,7 +82,7 @@ const Weight = ({ currentLog, setUserLogs }: WeightProps) => {
             <Input
               type="float"
               id="bodyweight"
-              defaultValue={userLog.bodyweight}
+              defaultValue={currentUserLog.bodyweight}
               {...register("bodyweight")}
             />
           </HStack>

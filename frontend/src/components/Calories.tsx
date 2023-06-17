@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import InfoIsland from "./InfoIsland";
-import { iUserLog } from "../api/models/userlog.interface";
 import { useAuth } from "../api/hooks/useAuthContext";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useUserData } from "../api/hooks/useUserDataContext";
+import { useGetUserLogs } from "../api/hooks/useUserLog";
 import {
   Button,
   FormControl,
@@ -12,14 +12,12 @@ import {
   VStack,
   HStack,
   Text,
+  Spacer,
 } from "@chakra-ui/react";
+import MacroIsland from "./MacroIsland";
+import MacroFormField from "./MacroFormField";
 
-interface CaloriesProps {
-  currentLog: iUserLog;
-  setUserLogs: React.Dispatch<React.SetStateAction<iUserLog[]>>;
-}
-
-interface CaloriesFormInput {
+export interface CaloriesFormInput {
   breakfast: number;
   lunch: number;
   dinner: number;
@@ -27,27 +25,30 @@ interface CaloriesFormInput {
   exercise: number;
 }
 
-const Calories = ({ currentLog, setUserLogs }: CaloriesProps) => {
-  const [userLog, setUserLog] = useState<iUserLog>({} as iUserLog);
+const Calories = () => {
   const { user } = useAuth();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<CaloriesFormInput>();
+  const { register, handleSubmit } = useForm<CaloriesFormInput>();
+  const { fetchUserLogs } = useGetUserLogs();
+  const { currentUserLog } = useUserData();
+  const [hasCurrentLog, setHasCurrentLog] = useState<boolean>(false);
 
   useEffect(() => {
-    setUserLog(currentLog);
-  }, [currentLog]);
+    if (!currentUserLog?._id) {
+      setHasCurrentLog(false);
+    }
+    if (currentUserLog?._id) {
+      setHasCurrentLog(true);
+    }
+  }, [currentUserLog]);
 
   const onSubmit: SubmitHandler<CaloriesFormInput> = async (data) => {
     if (!user) return;
 
-    const isNewLog = !currentLog._id;
+    const isNewLog = !currentUserLog?._id;
 
     const requestUrl = isNewLog
       ? "/api/userlog/add"
-      : `/api/userlog/update/${userLog._id}`;
+      : `/api/userlog/update/${currentUserLog?._id}`;
 
     const cleanData = {
       ...data,
@@ -69,106 +70,88 @@ const Calories = ({ currentLog, setUserLogs }: CaloriesProps) => {
     });
 
     if (res.ok) {
-      const updatedLogResponse = await fetch("/api/userlog/", {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
-        },
-      });
-      const updatedLogData = await updatedLogResponse.json();
-
-      setUserLogs(updatedLogData);
+      await fetchUserLogs();
     }
   };
 
+  if (!currentUserLog || !user) return <div>Loading...</div>;
   return (
-    <VStack minH="100vh" minW="100vw" pb="80px">
-      {user && (
-        <InfoIsland
-          number={
-            user.calorie_goal -
-            (userLog.breakfast +
-              userLog.lunch +
-              userLog.dinner +
-              userLog.snacks -
-              userLog.exercise)
-          }
-          string="Calories remaining"
-        ></InfoIsland>
-      )}
-
-      <Box as="form" onSubmit={handleSubmit(onSubmit)} color="whiteAlpha.800">
+    <VStack pb="80px">
+      <MacroIsland />
+      // form to update calories and protein
+      <Box
+        as="form"
+        onSubmit={handleSubmit(onSubmit)}
+        color="whiteAlpha.800"
+        w="100vw"
+      >
         <VStack align="start" spacing="2">
-          <HStack spacing="2" align="end">
-            <Text color="whiteAlpha.600">Calories</Text>
-            <Text color="whiteAlpha.600">Protein</Text>
+          <HStack
+            spacing="2"
+            justify="end"
+            marginRight="10px"
+            marginLeft="10px"
+            w="calc(100% - 20px)"
+          >
+            <Spacer flex="1" marginRight="5px" marginLeft="5px" />
+
+            <Text
+              color="whiteAlpha.600"
+              flex="1"
+              marginRight="5px"
+              marginLeft="5px"
+              align="center"
+            >
+              Calories
+            </Text>
+            <Text
+              color="whiteAlpha.600"
+              flex="1"
+              marginRight="5px"
+              marginLeft="5px"
+              align="center"
+            >
+              Protein
+            </Text>
           </HStack>
           <FormControl id="calories">
-            <HStack spacing="2" mb="4">
-              <FormLabel htmlFor="breakfast" fontWeight="bold" fontSize="xl">
-                Breakfast
-              </FormLabel>
-
-              <Input
-                type="number"
-                id="breakfast"
-                defaultValue={userLog.breakfast}
-                {...register("breakfast")}
-              />
-            </HStack>
-
-            <HStack spacing="2" mb="4">
-              <FormLabel htmlFor="lunch" fontWeight="bold" fontSize="xl">
-                Lunch
-              </FormLabel>
-              <Input
-                type="number"
-                id="lunch"
-                defaultValue={userLog.lunch}
-                {...register("lunch")}
-              />
-            </HStack>
-
-            <HStack spacing="2" mb="4">
-              <FormLabel htmlFor="dinner" fontWeight="bold" fontSize="xl">
-                Dinner
-              </FormLabel>
-              <Input
-                type="number"
-                id="dinner"
-                defaultValue={userLog.dinner}
-                {...register("dinner")}
-              />
-            </HStack>
-
-            <HStack spacing="2" mb="4">
-              <FormLabel htmlFor="snacks" fontWeight="bold" fontSize="xl">
-                Snacks
-              </FormLabel>
-              <Input
-                type="number"
-                id="snacks"
-                defaultValue={userLog.snacks}
-                {...register("snacks")}
-              />
-            </HStack>
-
-            <HStack spacing="2" mb="4">
-              <FormLabel htmlFor="exercise" fontWeight="bold" fontSize="xl">
-                Exercise
-              </FormLabel>
-              <Input
-                type="number"
-                id="exercise"
-                defaultValue={userLog.exercise}
-                {...register("exercise")}
-              />
-            </HStack>
+            <MacroFormField
+              label="Breakfast"
+              id="breakfast"
+              defaultValue={currentUserLog.breakfast}
+              register={register}
+            />
+            <MacroFormField
+              label="Lunch"
+              id="lunch"
+              defaultValue={currentUserLog.lunch}
+              register={register}
+            />
+            <MacroFormField
+              label="Dinner"
+              id="dinner"
+              defaultValue={currentUserLog.dinner}
+              register={register}
+            />
+            <MacroFormField
+              label="Snacks"
+              id="snacks"
+              defaultValue={currentUserLog.snacks}
+              register={register}
+            />
+            <MacroFormField
+              label="Exercise"
+              id="exercise"
+              defaultValue={currentUserLog.exercise}
+              register={register}
+            />
           </FormControl>
         </VStack>
-
-        <Button type="submit" colorScheme="green">
-          Submit
-        </Button>
+        <Box display="flex" mb="5px" marginLeft="10px" marginRight="10px">
+          <Button type="submit" colorScheme="green" flex="1">
+            Update
+          </Button>
+        </Box>
       </Box>
     </VStack>
   );
