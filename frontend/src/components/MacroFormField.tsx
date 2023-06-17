@@ -1,6 +1,7 @@
 import { HStack, FormLabel, Box, Input } from "@chakra-ui/react";
 import type { UseFormRegister } from "react-hook-form";
 import { CaloriesFormInput } from "./Calories";
+import { useMediaQuery } from "@chakra-ui/react";
 
 interface FormFieldProps {
   label: string;
@@ -15,8 +16,16 @@ const MacroFormField = ({
   defaultValue,
   register,
 }: FormFieldProps) => {
+  const [isLargerThan320] = useMediaQuery("(min-width: 320px)");
+  const bottomMarginSize = isLargerThan320 ? 4 : 2;
+
   return (
-    <HStack spacing="2" mb="4" marginRight="10px" marginLeft="10px">
+    <HStack
+      marginRight="10px"
+      marginLeft="10px"
+      spacing="2"
+      mb={bottomMarginSize}
+    >
       <FormLabel
         htmlFor={id}
         fontWeight="bold"

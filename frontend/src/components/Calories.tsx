@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useAuth } from "../api/hooks/useAuthContext";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useUserData } from "../api/hooks/useUserDataContext";
@@ -6,13 +5,11 @@ import { useGetUserLogs } from "../api/hooks/useUserLog";
 import {
   Button,
   FormControl,
-  FormLabel,
-  Input,
   Box,
-  VStack,
   HStack,
   Text,
   Spacer,
+  Flex,
 } from "@chakra-ui/react";
 import MacroIsland from "./MacroIsland";
 import MacroFormField from "./MacroFormField";
@@ -30,16 +27,6 @@ const Calories = () => {
   const { register, handleSubmit } = useForm<CaloriesFormInput>();
   const { fetchUserLogs } = useGetUserLogs();
   const { currentUserLog } = useUserData();
-  const [hasCurrentLog, setHasCurrentLog] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (!currentUserLog?._id) {
-      setHasCurrentLog(false);
-    }
-    if (currentUserLog?._id) {
-      setHasCurrentLog(true);
-    }
-  }, [currentUserLog]);
 
   const onSubmit: SubmitHandler<CaloriesFormInput> = async (data) => {
     if (!user) return;
@@ -76,22 +63,28 @@ const Calories = () => {
 
   if (!currentUserLog || !user) return <div>Loading...</div>;
   return (
-    <VStack pb="80px">
-      <MacroIsland />
-      // form to update calories and protein
-      <Box
+    <Flex flexDirection="column" align="center" h="100%">
+      <Box flex="1">
+        <MacroIsland />
+      </Box>
+
+      <Flex
         as="form"
+        flexDirection="column"
+        align="center"
         onSubmit={handleSubmit(onSubmit)}
         color="whiteAlpha.800"
         w="100vw"
+        flex="6"
       >
-        <VStack align="start" spacing="2">
+        <Flex align="center" flexDirection="column" maxW="600px">
           <HStack
             spacing="2"
             justify="end"
             marginRight="10px"
             marginLeft="10px"
             w="calc(100% - 20px)"
+            mb="2"
           >
             <Spacer flex="1" marginRight="5px" marginLeft="5px" />
 
@@ -121,24 +114,28 @@ const Calories = () => {
               defaultValue={currentUserLog.breakfast}
               register={register}
             />
+
             <MacroFormField
               label="Lunch"
               id="lunch"
               defaultValue={currentUserLog.lunch}
               register={register}
             />
+
             <MacroFormField
               label="Dinner"
               id="dinner"
               defaultValue={currentUserLog.dinner}
               register={register}
             />
+
             <MacroFormField
               label="Snacks"
               id="snacks"
               defaultValue={currentUserLog.snacks}
               register={register}
             />
+
             <MacroFormField
               label="Exercise"
               id="exercise"
@@ -146,14 +143,20 @@ const Calories = () => {
               register={register}
             />
           </FormControl>
-        </VStack>
-        <Box display="flex" mb="5px" marginLeft="10px" marginRight="10px">
+        </Flex>
+        <Flex
+          marginLeft="10px"
+          marginRight="10px"
+          justify="center"
+          w="80%"
+          maxW="300px"
+        >
           <Button type="submit" colorScheme="green" flex="1">
             Update
           </Button>
-        </Box>
-      </Box>
-    </VStack>
+        </Flex>
+      </Flex>
+    </Flex>
   );
 };
 
