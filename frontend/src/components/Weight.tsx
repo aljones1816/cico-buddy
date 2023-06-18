@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import InfoIsland from "./InfoIsland";
 import { useAuth } from "../api/hooks/useAuthContext";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useUserData } from "../api/hooks/useUserDataContext";
@@ -11,8 +10,15 @@ import {
   Box,
   VStack,
   HStack,
+  Card,
+  CardBody,
+  Flex,
+  IconButton,
+  ButtonGroup,
+  Text,
 } from "@chakra-ui/react";
 import WeightHistory from "./WeightHistory";
+import { EditIcon, AddIcon, CloseIcon } from "@chakra-ui/icons";
 
 interface WeightFormInput {
   bodyweight: number;
@@ -24,14 +30,12 @@ const Weight = () => {
   const { currentUserLog } = useUserData();
   const { register, handleSubmit } = useForm<WeightFormInput>();
   const [hasCurrentLog, setHasCurrentLog] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!currentUserLog?._id) {
+    if (currentUserLog?.bodyweight === 0 || !currentUserLog?.bodyweight) {
       setHasCurrentLog(false);
-    }
-    if (currentUserLog?._id) {
-      setHasCurrentLog(true);
-    }
+    } else setHasCurrentLog(true);
   }, [currentUserLog]);
 
   const onSubmit: SubmitHandler<WeightFormInput> = async (data) => {
@@ -61,39 +65,93 @@ const Weight = () => {
     if (res.ok) {
       fetchUserLogs();
     }
+    setIsEditing(false);
   };
 
   if (!currentUserLog) return <div>Loading...</div>;
   return (
-    <VStack align="center" spacing="4">
-      <InfoIsland
-        number={currentUserLog.bodyweight}
-        string="Today's weight"
-        hasCurrentLog={hasCurrentLog}
-      />
+    <Flex align="center" justify="center" flexDirection="column" h="100%">
+      <Card
+        bg="gray.600"
+        color="white"
+        borderTop="5px solid"
+        borderColor="green.300"
+        className="info-island"
+        w="60vw"
+        maxW="300px"
+        maxH="250px"
+        minH="150px"
+        textAlign="center"
+        justify="center"
+        borderRadius="xl"
+        m="5"
+        flex="1"
+      >
+        {!isEditing && (
+          <CardBody>
+            <Text fontSize="xl">Weight: {currentUserLog.bodyweight} lbs</Text>
+            <Box position="absolute" bottom="10px" right="10px">
+              {hasCurrentLog ? (
+                <IconButton
+                  icon={<EditIcon />}
+                  aria-label="edit"
+                  onClick={() => setIsEditing(true)}
+                />
+              ) : (
+                <IconButton
+                  icon={<AddIcon />}
+                  aria-label="edit"
+                  onClick={() => setIsEditing(true)}
+                />
+              )}
+            </Box>
+          </CardBody>
+        )}
+        {isEditing && (
+          <CardBody>
+            <Box
+              as="form"
+              onSubmit={handleSubmit(onSubmit)}
+              color="whiteAlpha.800"
+            >
+              <VStack align="start" spacing="2">
+                <HStack spacing="2" mb="4">
+                  <FormLabel
+                    htmlFor="bodyweight"
+                    fontWeight="bold"
+                    fontSize="l"
+                  >
+                    Enter weight:
+                  </FormLabel>
 
-      <Box as="form" onSubmit={handleSubmit(onSubmit)} color="whiteAlpha.800">
-        <VStack align="start" spacing="2">
-          <HStack spacing="2" mb="4">
-            <FormLabel htmlFor="bodyweight" fontWeight="bold" fontSize="xl">
-              Weight:
-            </FormLabel>
+                  <Input
+                    type="float"
+                    id="bodyweight"
+                    defaultValue={currentUserLog.bodyweight}
+                    {...register("bodyweight")}
+                  />
+                </HStack>
+              </VStack>
+              <ButtonGroup>
+                <Button type="submit" colorScheme="green">
+                  Submit
+                </Button>
+                <IconButton
+                  aria-label="cancel"
+                  icon={<CloseIcon />}
+                  onClick={() => setIsEditing(false)}
+                  colorScheme="red"
+                />
+              </ButtonGroup>
+            </Box>
+          </CardBody>
+        )}
+      </Card>
 
-            <Input
-              type="float"
-              id="bodyweight"
-              defaultValue={currentUserLog.bodyweight}
-              {...register("bodyweight")}
-            />
-          </HStack>
-        </VStack>
-
-        <Button type="submit" colorScheme="green">
-          Submit
-        </Button>
-      </Box>
-      <WeightHistory />
-    </VStack>
+      <Flex flex="2" w="100vw" justify="center" align="center">
+        <WeightHistory />
+      </Flex>
+    </Flex>
   );
 };
 
