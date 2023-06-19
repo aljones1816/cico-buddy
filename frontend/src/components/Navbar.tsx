@@ -43,7 +43,7 @@ const Navbar = ({ isCalories, isWeight, isHistory }: NavbarProps) => {
 
       {user && (
         <Link to="/profile">
-          <Avatar bg="teal.600" size={avatarSize} />
+          <Avatar bg="black" size={avatarSize} />
         </Link>
       )}
     </Flex>

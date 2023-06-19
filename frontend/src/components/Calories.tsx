@@ -20,6 +20,7 @@ export interface CaloriesFormInput {
   dinner: number;
   snacks: number;
   exercise: number;
+  bodyweight?: number;
 }
 
 const Calories = () => {
@@ -112,6 +113,7 @@ const Calories = () => {
               label="Breakfast"
               id="breakfast"
               defaultValue={currentUserLog.breakfast}
+              inputType="number"
               register={register}
             />
 
@@ -119,6 +121,7 @@ const Calories = () => {
               label="Lunch"
               id="lunch"
               defaultValue={currentUserLog.lunch}
+              inputType="number"
               register={register}
             />
 
@@ -126,6 +129,7 @@ const Calories = () => {
               label="Dinner"
               id="dinner"
               defaultValue={currentUserLog.dinner}
+              inputType="number"
               register={register}
             />
 
@@ -133,6 +137,7 @@ const Calories = () => {
               label="Snacks"
               id="snacks"
               defaultValue={currentUserLog.snacks}
+              inputType="number"
               register={register}
             />
 
@@ -140,6 +145,7 @@ const Calories = () => {
               label="Exercise"
               id="exercise"
               defaultValue={currentUserLog.exercise}
+              inputType="number"
               register={register}
             />
           </FormControl>

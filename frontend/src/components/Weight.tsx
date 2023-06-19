@@ -96,12 +96,14 @@ const Weight = () => {
                   icon={<EditIcon />}
                   aria-label="edit"
                   onClick={() => setIsEditing(true)}
+                  colorScheme="blue"
                 />
               ) : (
                 <IconButton
                   icon={<AddIcon />}
                   aria-label="edit"
                   onClick={() => setIsEditing(true)}
+                  colorScheme="blue"
                 />
               )}
             </Box>
@@ -132,17 +134,32 @@ const Weight = () => {
                   />
                 </HStack>
               </VStack>
-              <ButtonGroup>
-                <Button type="submit" colorScheme="green">
-                  Submit
-                </Button>
-                <IconButton
-                  aria-label="cancel"
-                  icon={<CloseIcon />}
-                  onClick={() => setIsEditing(false)}
-                  colorScheme="red"
-                />
-              </ButtonGroup>
+              {hasCurrentLog && (
+                <ButtonGroup>
+                  <Button type="submit" colorScheme="green">
+                    Update
+                  </Button>
+                  <IconButton
+                    aria-label="cancel"
+                    icon={<CloseIcon />}
+                    onClick={() => setIsEditing(false)}
+                    colorScheme="red"
+                  />
+                </ButtonGroup>
+              )}
+              {!hasCurrentLog && (
+                <ButtonGroup>
+                  <Button type="submit" colorScheme="green">
+                    Add
+                  </Button>
+                  <IconButton
+                    aria-label="cancel"
+                    icon={<CloseIcon />}
+                    onClick={() => setIsEditing(false)}
+                    colorScheme="red"
+                  />
+                </ButtonGroup>
+              )}
             </Box>
           </CardBody>
         )}

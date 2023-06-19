@@ -6,7 +6,8 @@ import { useMediaQuery } from "@chakra-ui/react";
 interface FormFieldProps {
   label: string;
   id: keyof CaloriesFormInput;
-  defaultValue?: number;
+  defaultValue: number;
+  inputType: string;
   register: UseFormRegister<CaloriesFormInput>; // Replace with the correct type for your form library
 }
 
@@ -14,6 +15,7 @@ const MacroFormField = ({
   label,
   id,
   defaultValue,
+  inputType,
   register,
 }: FormFieldProps) => {
   const [isLargerThan320] = useMediaQuery("(min-width: 320px)");
@@ -42,7 +44,7 @@ const MacroFormField = ({
       </FormLabel>
       <Box flex="1" marginLeft="5px" marginRight="5px">
         <Input
-          type="number"
+          type={inputType}
           id={id}
           defaultValue={defaultValue}
           {...register(id)}
@@ -50,7 +52,7 @@ const MacroFormField = ({
         />
       </Box>
       <Box flex="1" marginLeft="5px" marginRight="5px">
-        <Input type="number" id={`${id}Protein`} maxH="30px" />
+        <Input type={inputType} id={`${id}Protein`} maxH="30px" />
       </Box>
     </HStack>
   );
