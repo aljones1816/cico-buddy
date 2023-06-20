@@ -1,22 +1,41 @@
 import { useAuth } from "../api/hooks/useAuthContext";
 import { useState } from "react";
 import { useLogout } from "../api/hooks/useLogout";
-import { Button } from "@chakra-ui/react";
-import { IconArrowBigLeftFilled } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Flex,
+  Avatar,
+  Heading,
+  Text,
+  FormLabel,
+  Input,
+  VStack,
+} from "@chakra-ui/react";
+import { ArrowBackIcon } from "@chakra-ui/icons";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+interface UserFormInput {
+  name: string;
+  age: string;
+  calorie_goal: number;
+}
 
 const Profile = () => {
   const { user, login } = useAuth();
   const [editMode, setEditMode] = useState<boolean>(false);
   const { handleLogout } = useLogout();
+  const { register, handleSubmit } = useForm<UserFormInput>();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+  const onSubmit: SubmitHandler<UserFormInput> = async (data) => {
+    if (!user) return;
+
     const updatedUser = {
-      name: formData.get("name"),
-      age: formData.get("age"),
-      calorie_goal: formData.get("calorie_goal"),
+      name: data.name,
+      age: data.age,
+      calorie_goal: data.calorie_goal,
     };
 
     try {
@@ -40,45 +59,67 @@ const Profile = () => {
     }
   };
 
+  if (!user) return <div>Loading... </div>;
   return (
-    <>
-      {user && (
-        <div>
-          {editMode ? (
-            <form onSubmit={handleSubmit}>
-              <label htmlFor="name">Name</label>
-              <input
-                type="text"
-                name="name"
-                id="name"
-                defaultValue={user.name}
-              />
-              <label htmlFor="age">Age</label>
-              <input type="age" name="age" id="age" defaultValue={user.age} />
-              <label htmlFor="calorie_goal">Calorie Goal</label>
-              <input
-                type="number"
-                name="calorie_goal"
-                id="calorie_goal"
-                defaultValue={user.calorie_goal}
-              />
-              <button type="submit">Save</button>
-            </form>
-          ) : (
-            <div>
-              <Link to="/">
-                <IconArrowBigLeftFilled />
-              </Link>
-
-              <h2>Hi, {user.name}!</h2>
-              <p>Your daily calorie goal is: {user.calorie_goal}</p>
-              <button onClick={() => setEditMode(true)}>Edit</button>
-            </div>
-          )}
-          <Button onClick={handleLogout}>Log out</Button>
-        </div>
-      )}
-    </>
+    <Box bg="black" color="whiteAlpha.800" h="100vh" w="100vw">
+      <Flex justify="top">
+        <Box marginLeft="5px" marginTop="5px" bg="gray" borderRadius="50%">
+          <Link to="/">
+            <ArrowBackIcon fontSize="40" />
+          </Link>
+        </Box>
+      </Flex>
+      <Flex flexDirection="column" align="center">
+        {editMode ? (
+          <VStack as="form" onSubmit={handleSubmit(onSubmit)} w="50vw">
+            <FormLabel htmlFor="name">Name</FormLabel>
+            <Input
+              type="text"
+              id="name"
+              {...register("name")}
+              defaultValue={user.name}
+            />
+            <FormLabel htmlFor="age">Age</FormLabel>
+            <Input
+              type="age"
+              id="age"
+              {...register("age")}
+              defaultValue={user.age}
+            />
+            <FormLabel htmlFor="calorie_goal">Daily Calorie Goal</FormLabel>
+            <Input
+              type="number"
+              id="calorie_goal"
+              {...register("calorie_goal")}
+              defaultValue={user.calorie_goal}
+            />
+            <ButtonGroup mt="20px">
+              <Button type="submit" colorScheme="green">
+                Save
+              </Button>
+              <Button onClick={() => setEditMode(false)} colorScheme="orange">
+                Cancel
+              </Button>
+            </ButtonGroup>
+          </VStack>
+        ) : (
+          <Flex flexDirection="column" justify="center" align="center" mt="8">
+            <Avatar size="xl" mb="5" />
+            {user.name && <Heading>{user.name}</Heading>}
+            {!user.name && <Heading>Hi, {user.email}!</Heading>}
+            <Text mb="5">Your daily calorie goal is: {user.calorie_goal}</Text>
+            <ButtonGroup>
+              <Button onClick={() => setEditMode(true)} colorScheme="blue">
+                Edit
+              </Button>
+              <Button onClick={handleLogout} colorScheme="red">
+                Log out
+              </Button>
+            </ButtonGroup>
+          </Flex>
+        )}
+      </Flex>
+    </Box>
   );
 };
 
