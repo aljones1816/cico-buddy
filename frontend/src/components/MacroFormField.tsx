@@ -6,7 +6,7 @@ import { useMediaQuery } from "@chakra-ui/react";
 interface FormFieldProps {
   label: string;
   id: keyof CaloriesFormInput;
-  defaultValue: number;
+  defaultValue: { calories: number; protein?: number; bodyweight?: number };
   inputType: string;
   register: UseFormRegister<CaloriesFormInput>; // Replace with the correct type for your form library
 }
@@ -29,7 +29,7 @@ const MacroFormField = ({
       mb={bottomMarginSize}
     >
       <FormLabel
-        htmlFor={id}
+        htmlFor={`${id}Calories`}
         fontWeight="bold"
         fontSize="l"
         flex="1"
@@ -42,18 +42,41 @@ const MacroFormField = ({
       >
         {label}
       </FormLabel>
-      <Box flex="1" marginLeft="5px" marginRight="5px">
-        <Input
-          type={inputType}
-          id={id}
-          defaultValue={defaultValue}
-          {...register(id)}
-          maxH="30px"
-        />
-      </Box>
-      <Box flex="1" marginLeft="5px" marginRight="5px">
-        <Input type={inputType} id={`${id}Protein`} maxH="30px" />
-      </Box>
+      {id !== "bodyweight" && (
+        <>
+          <Box flex="1" marginLeft="5px" marginRight="5px">
+            <Input
+              type={inputType}
+              id={`${id}.calories`}
+              defaultValue={defaultValue.calories}
+              {...register(`${id}.calories`)}
+              maxH="30px"
+            />
+          </Box>
+          {id !== "exercise" && (
+            <Box flex="1" marginLeft="5px" marginRight="5px">
+              <Input
+                type={inputType}
+                id={`${id}.protein`}
+                defaultValue={defaultValue.protein}
+                {...register(`${id}.protein`)}
+                maxH="30px"
+              />
+            </Box>
+          )}
+        </>
+      )}
+      {id === "bodyweight" && (
+        <Box flex="1" marginLeft="5px" marginRight="5px">
+          <Input
+            type={inputType}
+            id={`${id}.calories`}
+            defaultValue={defaultValue.calories}
+            {...register(`${id}`)}
+            maxH="30px"
+          />
+        </Box>
+      )}
     </HStack>
   );
 };

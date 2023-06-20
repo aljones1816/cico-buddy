@@ -33,13 +33,13 @@ const useGetUserLogs = () => {
         } else {
           setCurrentUserLog({
             _id: "",
-            email: "",
+
             date: new Date(),
-            breakfast: 0,
-            lunch: 0,
-            dinner: 0,
-            snacks: 0,
-            exercise: 0,
+            breakfast: { calories: 0, protein: 0 },
+            lunch: { calories: 0, protein: 0 },
+            dinner: { calories: 0, protein: 0 },
+            snacks: { calories: 0, protein: 0 },
+            exercise: { calories: 0 },
             bodyweight: 0,
             user_id: "",
           });

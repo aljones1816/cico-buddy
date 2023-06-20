@@ -41,14 +41,23 @@ const History = () => {
     const requestUrl = `/api/userlog/update/${editingCardId}`;
 
     const cleanData = {
-      ...data,
-      email: user.email,
-      breakfast: data.breakfast || "0",
-      lunch: data.lunch || "0",
-      dinner: data.dinner || "0",
-      snacks: data.snacks || "0",
-      exercise: data.exercise || "0",
-      bodyweight: data.bodyweight || "0",
+      breakfast: {
+        calories: data.breakfast.calories || "0",
+        protein: data.breakfast.protein || "0",
+      },
+      lunch: {
+        calories: data.lunch.calories || "0",
+        protein: data.lunch.protein || "0",
+      },
+      dinner: {
+        calories: data.dinner.calories || "0",
+        protein: data.dinner.protein || "0",
+      },
+      snacks: {
+        calories: data.snacks.calories || "0",
+        protein: data.snacks.protein || "0",
+      },
+      exercise: { calories: data.exercise.calories || "0" },
     };
 
     const res = await fetch(requestUrl, {
@@ -180,7 +189,11 @@ const History = () => {
                       <MacroFormField
                         label="Weight"
                         id="bodyweight"
-                        defaultValue={userLog.bodyweight}
+                        defaultValue={{
+                          calories: 0,
+                          protein: 0,
+                          bodyweight: userLog.bodyweight,
+                        }}
                         inputType="float"
                         register={register}
                       />
@@ -213,13 +226,21 @@ const History = () => {
               <CardBody>
                 <p>
                   Eaten:{" "}
-                  {userLog.breakfast +
-                    userLog.lunch +
-                    userLog.dinner +
-                    userLog.snacks}{" "}
+                  {userLog.breakfast.calories +
+                    userLog.lunch.calories +
+                    userLog.dinner.calories +
+                    userLog.snacks.calories}{" "}
                   calories
                 </p>
-                <p>Exercise: {userLog.exercise} calories</p>
+                <p>
+                  Protein:{" "}
+                  {userLog.breakfast.protein +
+                    userLog.lunch.protein +
+                    userLog.dinner.protein +
+                    userLog.snacks.protein}{" "}
+                  grams
+                </p>
+                <p>Exercise: {userLog.exercise.calories} calories</p>
                 <p>Bodyweight: {userLog.bodyweight} lbs</p>
                 <ButtonGroup position="absolute" bottom="10px" right="10px">
                   <IconButton

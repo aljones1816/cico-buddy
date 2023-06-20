@@ -15,12 +15,12 @@ import MacroIsland from "./MacroIsland";
 import MacroFormField from "./MacroFormField";
 
 export interface CaloriesFormInput {
-  breakfast: number;
-  lunch: number;
-  dinner: number;
-  snacks: number;
-  exercise: number;
-  bodyweight?: number;
+  breakfast: { calories: number; protein: number };
+  lunch: { calories: number; protein: number };
+  dinner: { calories: number; protein: number };
+  snacks: { calories: number; protein: number };
+  exercise: { calories: number };
+  bodyweight: number;
 }
 
 const Calories = () => {
@@ -39,13 +39,23 @@ const Calories = () => {
       : `/api/userlog/update/${currentUserLog?._id}`;
 
     const cleanData = {
-      ...data,
-      email: user.email,
-      breakfast: data.breakfast || "0",
-      lunch: data.lunch || "0",
-      dinner: data.dinner || "0",
-      snacks: data.snacks || "0",
-      exercise: data.exercise || "0",
+      breakfast: {
+        calories: data.breakfast.calories || "0",
+        protein: data.breakfast.protein || "0",
+      },
+      lunch: {
+        calories: data.lunch.calories || "0",
+        protein: data.lunch.protein || "0",
+      },
+      dinner: {
+        calories: data.dinner.calories || "0",
+        protein: data.dinner.protein || "0",
+      },
+      snacks: {
+        calories: data.snacks.calories || "0",
+        protein: data.snacks.protein || "0",
+      },
+      exercise: { calories: data.exercise.calories || "0" },
     };
 
     const res = await fetch(requestUrl, {
