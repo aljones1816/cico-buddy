@@ -14,15 +14,22 @@ const MacroIsland = () => {
   const { user } = useAuth();
   const { currentUserLog } = useUserData();
   const [calorieTotal, setCalorieTotal] = useState<number>(0);
+  const [proteinTotal, setProteinTotal] = useState<number>(0);
 
   useEffect(() => {
     if (currentUserLog) {
       setCalorieTotal(
-        currentUserLog.breakfast +
-          currentUserLog.lunch +
-          currentUserLog.dinner +
-          currentUserLog.snacks -
-          currentUserLog.exercise
+        currentUserLog.breakfast.calories +
+          currentUserLog.lunch.calories +
+          currentUserLog.dinner.calories +
+          currentUserLog.snacks.calories -
+          currentUserLog.exercise.calories
+      );
+      setProteinTotal(
+        currentUserLog.breakfast.protein +
+          currentUserLog.lunch.protein +
+          currentUserLog.dinner.protein +
+          currentUserLog.snacks.protein
       );
     }
   }, [currentUserLog]);
@@ -65,9 +72,13 @@ const MacroIsland = () => {
           <VStack id="protein" flex="1" spacing="2" pl="2">
             <Text fontSize="xs">Protein</Text>
             <Text fontSize="xx-small">
-              {75} / {150}
+              {proteinTotal} / {user.protein_goal}
             </Text>
-            <CircularProgress color="orange.400" thickness="10px" value={45} />
+            <CircularProgress
+              color="orange.400"
+              thickness="10px"
+              value={(proteinTotal / user.protein_goal) * 100}
+            />
           </VStack>
         </HStack>
       </CardBody>

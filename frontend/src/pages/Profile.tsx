@@ -21,6 +21,7 @@ interface UserFormInput {
   name: string;
   age: string;
   calorie_goal: number;
+  protein_goal: number;
 }
 
 const Profile = () => {
@@ -36,6 +37,7 @@ const Profile = () => {
       name: data.name,
       age: data.age,
       calorie_goal: data.calorie_goal,
+      protein_goal: data.protein_goal,
     };
 
     try {
@@ -93,6 +95,13 @@ const Profile = () => {
               {...register("calorie_goal")}
               defaultValue={user.calorie_goal}
             />
+            <FormLabel htmlFor="protein_goal">Daily Protein Goal</FormLabel>
+            <Input
+              type="number"
+              id="protein_goal"
+              {...register("protein_goal")}
+              defaultValue={user.protein_goal}
+            />
             <ButtonGroup mt="20px">
               <Button type="submit" colorScheme="green">
                 Save
@@ -108,6 +117,9 @@ const Profile = () => {
             {user.name && <Heading>{user.name}</Heading>}
             {!user.name && <Heading>Hi, {user.email}!</Heading>}
             <Text mb="5">Your daily calorie goal is: {user.calorie_goal}</Text>
+            <Text mb="5">
+              Your daily protein goal is: {user.protein_goal} grams
+            </Text>
             <ButtonGroup>
               <Button onClick={() => setEditMode(true)} colorScheme="blue">
                 Edit
