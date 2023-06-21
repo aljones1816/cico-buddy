@@ -76,7 +76,19 @@ const History = () => {
   };
 
   const handleDeleteLog = async (id: string) => {
-    console.log("delete", id);
+    const res = await fetch(`/api/userlog/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user?.token}`,
+      },
+    });
+
+    if (res.ok) {
+      await fetchUserLogs();
+    }
+
+    setEditingCardId(null);
   };
 
   if (!userData) {

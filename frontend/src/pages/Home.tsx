@@ -5,7 +5,7 @@ import History from "../components/History";
 import { useGetUserLogs } from "../api/hooks/useUserLog";
 import Navfooter from "../components/Navfooter";
 import Navbar from "../components/Navbar";
-import { Flex, useBreakpointValue } from "@chakra-ui/react";
+import { Flex, useBreakpointValue, Text } from "@chakra-ui/react";
 
 const Home = () => {
   const { isLoading, data: userLogs, error } = useGetUserLogs();
@@ -30,7 +30,20 @@ const Home = () => {
     setIsCalories(true);
   }, []);
 
-  if (isLoading) return <h1>Loading...</h1>;
+  if (isLoading)
+    return (
+      <Flex
+        bg="black"
+        w="100vw"
+        h="100vh"
+        color="whiteAlpha.800"
+        flexDir="column"
+        justify="center"
+        align="center"
+      >
+        <Text>Loading...</Text>
+      </Flex>
+    );
   if (error) return <h1>Something went wrong!</h1>;
   return (
     <Flex
