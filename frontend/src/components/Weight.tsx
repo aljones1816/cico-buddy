@@ -89,7 +89,11 @@ const Weight = () => {
       >
         {!isEditing && (
           <CardBody>
-            <Text fontSize="xl">Weight: {currentUserLog.bodyweight} lbs</Text>
+            {hasCurrentLog && (
+              <Text fontSize="xl">Weight: {currentUserLog.bodyweight} lbs</Text>
+            )}
+            {!hasCurrentLog && <Text fontSize="xl">Enter today's weight!</Text>}
+
             <Box position="absolute" bottom="10px" right="10px">
               {hasCurrentLog ? (
                 <IconButton
