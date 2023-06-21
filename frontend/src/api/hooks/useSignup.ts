@@ -22,7 +22,17 @@ export const useSignup = () => {
         localStorage.setItem("user", JSON.stringify(data));
         login(data);
       } else {
-        setError(data.error);
+        if (data.error === "Error: Email and password required") {
+          setError("Email and password required");
+        } else if (data.error === "Error: Password is not strong enough") {
+          setError(
+            "Password must be at least 8 characters long and contain at least one number and one special character"
+          );
+        } else if (data.error === "Error: Email already exists") {
+          setError("That email is already in use");
+        } else {
+          setError("Something went wrong! Please try again.");
+        }
       }
     } catch (err) {
       if (typeof err === "string") {
