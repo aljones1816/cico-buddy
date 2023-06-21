@@ -49,8 +49,8 @@ const WeightHistory = () => {
           <Line
             type="monotone"
             dataKey="bodyweight"
-            stroke="#4FD1C5"
-            fill="#4FD1C5"
+            stroke="#D69E2E"
+            fill="#D69E2E"
           />
 
           <XAxis dataKey="date" stroke="#F7FAFC" />
