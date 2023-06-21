@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Calories from "../components/Macros";
+import Macros from "../components/Macros";
 import Weight from "../components/Weight";
 import History from "../components/History";
 import { useGetUserLogs } from "../api/hooks/useUserLog";
@@ -62,7 +62,7 @@ const Home = () => {
       </Flex>
 
       <Flex flex="1" overflowY="auto" flexDir="column" alignItems="stretch">
-        {isCalories && <Calories />}
+        {isCalories && <Macros />}
         {isWeight && <Weight />}
         {userLogs && isHistory && <History />}
       </Flex>

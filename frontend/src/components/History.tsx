@@ -139,11 +139,11 @@ const History = () => {
                       w="calc(100% - 20px)"
                       mb="2"
                     >
-                      <Spacer flex="1" marginRight="5px" marginLeft="5px" />
+                      <Spacer flex="2" marginRight="5px" marginLeft="5px" />
 
                       <Text
                         color="whiteAlpha.600"
-                        flex="1"
+                        flex="3"
                         marginRight="5px"
                         marginLeft="5px"
                         align="center"
@@ -152,7 +152,7 @@ const History = () => {
                       </Text>
                       <Text
                         color="whiteAlpha.600"
-                        flex="1"
+                        flex="3"
                         marginRight="5px"
                         marginLeft="5px"
                         align="center"
