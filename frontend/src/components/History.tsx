@@ -16,7 +16,7 @@ import { useUserData } from "../api/hooks/useUserDataContext";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import MacroFormField from "./MacroFormField";
-import { CaloriesFormInput } from "./Calories";
+import { CaloriesFormInput } from "./Macros";
 import { useAuth } from "../api/hooks/useAuthContext";
 import { useGetUserLogs } from "../api/hooks/useUserLog";
 
@@ -58,6 +58,7 @@ const History = () => {
         protein: data.snacks.protein || "0",
       },
       exercise: { calories: data.exercise.calories || "0" },
+      bodyweight: data.bodyweight || "0",
     };
 
     const res = await fetch(requestUrl, {
@@ -113,19 +114,21 @@ const History = () => {
             color="white"
             mb="10px"
           >
-            <CardHeader fontWeight="bold">
+            <CardHeader fontWeight="bold" paddingTop="4px" paddingBottom="0px">
               {new Date(userLog.date).toDateString()}
             </CardHeader>
             {editingCardId === userLog._id ? (
-              <CardBody>
+              <CardBody paddingLeft="8px" paddingRight="8px">
                 <Flex
                   as="form"
                   flexDirection="column"
                   align="center"
                   onSubmit={handleSubmit(handleSaveEdit)}
                   color="whiteAlpha.800"
-                  w="100%"
-                  mb="10%"
+                  mb="12%"
+                  paddingTop="10px"
+                  bg="gray.700"
+                  borderRadius="10px"
                 >
                   <Flex align="center" flexDirection="column" maxW="600px">
                     <HStack
@@ -136,11 +139,11 @@ const History = () => {
                       w="calc(100% - 20px)"
                       mb="2"
                     >
-                      <Spacer flex="1" marginRight="5px" marginLeft="5px" />
+                      <Spacer flex="2" marginRight="5px" marginLeft="5px" />
 
                       <Text
                         color="whiteAlpha.600"
-                        flex="1"
+                        flex="3"
                         marginRight="5px"
                         marginLeft="5px"
                         align="center"
@@ -149,7 +152,7 @@ const History = () => {
                       </Text>
                       <Text
                         color="whiteAlpha.600"
-                        flex="1"
+                        flex="3"
                         marginRight="5px"
                         marginLeft="5px"
                         align="center"

@@ -1,6 +1,6 @@
 import { HStack, FormLabel, Box, Input } from "@chakra-ui/react";
 import type { UseFormRegister } from "react-hook-form";
-import { CaloriesFormInput } from "./Calories";
+import { CaloriesFormInput } from "./Macros";
 import { useMediaQuery } from "@chakra-ui/react";
 
 interface FormFieldProps {
@@ -32,19 +32,19 @@ const MacroFormField = ({
         htmlFor={`${id}Calories`}
         fontWeight="bold"
         fontSize="l"
-        flex="1"
+        flex="2"
         marginLeft="5px"
         marginRight="5px"
         style={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
         {label}
       </FormLabel>
       {id !== "bodyweight" && (
         <>
-          <Box flex="1" marginLeft="5px" marginRight="5px">
+          <Box flex="3" marginLeft="5px" marginRight="5px">
             <Input
               type={inputType}
               id={`${id}.calories`}
@@ -54,7 +54,7 @@ const MacroFormField = ({
             />
           </Box>
           {id !== "exercise" && (
-            <Box flex="1" marginLeft="5px" marginRight="5px">
+            <Box flex="3" marginLeft="5px" marginRight="5px">
               <Input
                 type={inputType}
                 id={`${id}.protein`}
@@ -67,11 +67,11 @@ const MacroFormField = ({
         </>
       )}
       {id === "bodyweight" && (
-        <Box flex="1" marginLeft="5px" marginRight="5px">
+        <Box flex="3" marginLeft="5px" marginRight="5px">
           <Input
             type={inputType}
-            id={`${id}.calories`}
-            defaultValue={defaultValue.calories}
+            id={`${id}`}
+            defaultValue={defaultValue.bodyweight}
             {...register(`${id}`)}
             maxH="30px"
           />

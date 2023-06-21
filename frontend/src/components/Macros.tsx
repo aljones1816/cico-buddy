@@ -23,7 +23,7 @@ export interface CaloriesFormInput {
   bodyweight: number;
 }
 
-const Calories = () => {
+const Macros = () => {
   const { user } = useAuth();
   const { register, handleSubmit } = useForm<CaloriesFormInput>();
   const { fetchUserLogs } = useGetUserLogs();
@@ -97,11 +97,11 @@ const Calories = () => {
             w="calc(100% - 20px)"
             mb="2"
           >
-            <Spacer flex="1" marginRight="5px" marginLeft="5px" />
+            <Spacer flex="2" marginRight="5px" marginLeft="5px" />
 
             <Text
               color="whiteAlpha.600"
-              flex="1"
+              flex="3"
               marginRight="5px"
               marginLeft="5px"
               align="center"
@@ -110,7 +110,7 @@ const Calories = () => {
             </Text>
             <Text
               color="whiteAlpha.600"
-              flex="1"
+              flex="3"
               marginRight="5px"
               marginLeft="5px"
               align="center"
@@ -176,4 +176,4 @@ const Calories = () => {
   );
 };
 
-export default Calories;
+export default Macros;

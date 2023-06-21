@@ -22,7 +22,16 @@ export const useLogin = () => {
         localStorage.setItem("user", JSON.stringify(data));
         login(data);
       } else {
-        setError(data.error);
+        if (data.error === "Error: Email and password required") {
+          setError("Email and password required");
+        } else if (
+          data.error === "Error: Incorrect email" ||
+          data.error === "Error: Incorrect password"
+        ) {
+          setError("Incorrect email or password");
+        } else {
+          setError("Something went wrong! Please try again.");
+        }
       }
     } catch (err) {
       if (typeof err === "string") {

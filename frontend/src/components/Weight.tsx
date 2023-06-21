@@ -32,6 +32,8 @@ const Weight = () => {
   const [hasCurrentLog, setHasCurrentLog] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
+  // create an array with the bodyweight and date from each userlog
+
   useEffect(() => {
     if (currentUserLog?.bodyweight === 0 || !currentUserLog?.bodyweight) {
       setHasCurrentLog(false);

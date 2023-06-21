@@ -22,7 +22,7 @@ const Navbar = ({ isCalories, isWeight, isHistory }: NavbarProps) => {
 
   useEffect(() => {
     if (isCalories) {
-      setHeaderText("Calories");
+      setHeaderText("Macros");
     } else if (isWeight) {
       setHeaderText("Weight");
     } else if (isHistory) {
