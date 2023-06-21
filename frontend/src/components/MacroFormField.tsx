@@ -32,19 +32,19 @@ const MacroFormField = ({
         htmlFor={`${id}Calories`}
         fontWeight="bold"
         fontSize="l"
-        flex="1"
+        flex="2"
         marginLeft="5px"
         marginRight="5px"
         style={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
         {label}
       </FormLabel>
       {id !== "bodyweight" && (
         <>
-          <Box flex="1" marginLeft="5px" marginRight="5px">
+          <Box flex="3" marginLeft="5px" marginRight="5px">
             <Input
               type={inputType}
               id={`${id}.calories`}
@@ -54,7 +54,7 @@ const MacroFormField = ({
             />
           </Box>
           {id !== "exercise" && (
-            <Box flex="1" marginLeft="5px" marginRight="5px">
+            <Box flex="3" marginLeft="5px" marginRight="5px">
               <Input
                 type={inputType}
                 id={`${id}.protein`}
@@ -67,7 +67,7 @@ const MacroFormField = ({
         </>
       )}
       {id === "bodyweight" && (
-        <Box flex="1" marginLeft="5px" marginRight="5px">
+        <Box flex="3" marginLeft="5px" marginRight="5px">
           <Input
             type={inputType}
             id={`${id}`}

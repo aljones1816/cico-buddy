@@ -114,19 +114,21 @@ const History = () => {
             color="white"
             mb="10px"
           >
-            <CardHeader fontWeight="bold">
+            <CardHeader fontWeight="bold" paddingTop="4px" paddingBottom="0px">
               {new Date(userLog.date).toDateString()}
             </CardHeader>
             {editingCardId === userLog._id ? (
-              <CardBody>
+              <CardBody paddingLeft="8px" paddingRight="8px">
                 <Flex
                   as="form"
                   flexDirection="column"
                   align="center"
                   onSubmit={handleSubmit(handleSaveEdit)}
                   color="whiteAlpha.800"
-                  w="100%"
-                  mb="10%"
+                  mb="12%"
+                  paddingTop="10px"
+                  bg="gray.700"
+                  borderRadius="10px"
                 >
                   <Flex align="center" flexDirection="column" maxW="600px">
                     <HStack
