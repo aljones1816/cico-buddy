@@ -1,12 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  ResponsiveContainer,
-} from "recharts";
+import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
 import { useUserData } from "../api/hooks/useUserDataContext";
 import { useEffect, useState } from "react";
 
@@ -54,7 +47,7 @@ const WeightHistory = () => {
           />
 
           <XAxis dataKey="date" stroke="#F7FAFC" />
-          <YAxis stroke="#F7FAFC" />
+          <YAxis stroke="#F7FAFC" domain={["auto", "auto"]} />
         </LineChart>
       </ResponsiveContainer>
     </Box>

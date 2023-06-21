@@ -1,6 +1,6 @@
 import { HStack, FormLabel, Box, Input } from "@chakra-ui/react";
 import type { UseFormRegister } from "react-hook-form";
-import { CaloriesFormInput } from "./Calories";
+import { CaloriesFormInput } from "./Macros";
 import { useMediaQuery } from "@chakra-ui/react";
 
 interface FormFieldProps {

@@ -16,7 +16,7 @@ import { useUserData } from "../api/hooks/useUserDataContext";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import MacroFormField from "./MacroFormField";
-import { CaloriesFormInput } from "./Calories";
+import { CaloriesFormInput } from "./Macros";
 import { useAuth } from "../api/hooks/useAuthContext";
 import { useGetUserLogs } from "../api/hooks/useUserLog";
 
