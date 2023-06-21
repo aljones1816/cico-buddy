@@ -70,8 +70,8 @@ const MacroFormField = ({
         <Box flex="1" marginLeft="5px" marginRight="5px">
           <Input
             type={inputType}
-            id={`${id}.calories`}
-            defaultValue={defaultValue.calories}
+            id={`${id}`}
+            defaultValue={defaultValue.bodyweight}
             {...register(`${id}`)}
             maxH="30px"
           />

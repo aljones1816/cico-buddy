@@ -58,6 +58,7 @@ const History = () => {
         protein: data.snacks.protein || "0",
       },
       exercise: { calories: data.exercise.calories || "0" },
+      bodyweight: data.bodyweight || "0",
     };
 
     const res = await fetch(requestUrl, {
