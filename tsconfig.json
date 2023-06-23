@@ -5,13 +5,13 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "outDir": "dist",
 
     /* Bundler mode */
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
+
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
     "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
 
@@ -21,6 +21,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["frontend", "server", "**/*.ts"],
+  "include": ["server", "**/*.ts"],
   "exclude": ["node_modules", ".vscode"]
 }

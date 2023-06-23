@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-import { iUserLog } from "../api/models/userlog.interface.ts";
+import { iUserLog } from "../api/models/userlog.interface";
 
 interface iUserDataContext {
   userLogs: iUserLog[] | null;

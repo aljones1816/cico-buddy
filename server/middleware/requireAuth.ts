@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { User } from "../models/user.model.ts";
+import { User } from "../models/user.model";
 import { Types } from "mongoose";
 
 export interface AuthenticatedRequest extends Request {

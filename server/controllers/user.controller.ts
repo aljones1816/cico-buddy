@@ -1,7 +1,7 @@
-import { User, IUser } from "../models/user.model.ts";
+import { User, IUser } from "../models/user.model";
 import { Request, Response } from "express";
 import jsonwebtoken from "jsonwebtoken";
-import { AuthenticatedRequest } from "../middleware/requireAuth.ts";
+import { AuthenticatedRequest } from "../middleware/requireAuth";
 
 const createToken = (_id: string) => {
   return jsonwebtoken.sign({ _id }, process.env.SECRET!, { expiresIn: "3d" });
