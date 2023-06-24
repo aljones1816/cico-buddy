@@ -5,6 +5,7 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "outDir": "./server/dist",
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -20,6 +21,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["server", "**/*.ts"],
-  "exclude": ["node_modules", ".vscode"]
+  "include": ["server/server.js", "server/src"],
+  "exclude": ["frontend", "node_modules", ".vscode"]
 }
