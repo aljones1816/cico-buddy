@@ -22,6 +22,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: "{{defaultContext}}:server"
-          file: ./server/Dockerfile
+          file: ./Dockerfile
           push: true
           tags: user/app:latest
