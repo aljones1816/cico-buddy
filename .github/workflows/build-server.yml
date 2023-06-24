@@ -1,4 +1,4 @@
-name: Build and Push Docker Image For Node Server
+name: Build and Push Docker Image
 
 on:
   push:
@@ -31,5 +31,5 @@ jobs:
             --build-arg ATLAS_URI=${ATLAS_URI} \
             --build-arg PORT=${PORT} \
             --build-arg SECRET=${SECRET} \
-            --tag your-dockerhub-username/your-repo-name:latest \
+            --tag ${{ secrets.DOCKERHUB_USERNAME }}/cico-buddy:latest \
             --push .
