@@ -24,4 +24,4 @@ jobs:
           context: "{{defaultContext}}:server"
           file: ./Dockerfile
           push: true
-          tags: user/app:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/cico-buddy:latest
