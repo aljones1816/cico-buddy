@@ -25,4 +25,4 @@ jobs:
           DOCKER_BUILDKIT: 1
         run: |
           echo $DOCKERHUB_TOKEN | docker login --username $DOCKERHUB_USERNAME --password-stdin
-          docker buildx build --file server/Dockerfile --tag $DOCKERHUB_USERNAME/cico-buddy:latest --push .
+          docker buildx build --file server/Dockerfile --tag $DOCKERHUB_USERNAME/cico-buddy:latest --push --build-arg ATLAS_URI=${{ secrets.ATLAS_URI }} --build-arg PORT=${{ secrets.PORT }} --build-arg SECRET=${{ secrets.SECRET }} .
