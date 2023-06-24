@@ -8,7 +8,6 @@ COPY package*.json ./
 RUN npm ci --production
 
 COPY dist .
-COPY .env .
 
 EXPOSE 80
 
