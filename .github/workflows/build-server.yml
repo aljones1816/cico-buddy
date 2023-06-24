@@ -27,7 +27,7 @@ jobs:
         run: |
           echo "Building Docker image..."
           docker buildx build \
-            --file server/Dockerfile \ .
+            --file server/Dockerfile . \ 
             --build-arg ATLAS_URI=${ATLAS_URI} \
             --build-arg PORT=${PORT} \
             --build-arg SECRET=${SECRET} \
