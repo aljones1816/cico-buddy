@@ -25,3 +25,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/cico-buddy:latest
+          args: |
+            ATLAS_URI=${{ secrets.ATLAS_URI }}
+            PORT=${{ secrets.PORT }}
+            SECRET=${{ secrets.SECRET }}
