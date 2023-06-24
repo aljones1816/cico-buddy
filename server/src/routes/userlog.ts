@@ -5,8 +5,8 @@ import {
   deleteUserlog,
   getUserlogById,
   updateUserlogById,
-} from "../controllers/userlog.controller";
-import requireAuth from "../middleware/requireAuth";
+} from "../controllers/userlog.controller.js";
+import requireAuth from "../middleware/requireAuth.js";
 
 const router = Router();
 

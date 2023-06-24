@@ -3,8 +3,8 @@ import {
   signupUser,
   loginUser,
   updateUserByID,
-} from "../controllers/user.controller";
-import requireAuth from "../middleware/requireAuth";
+} from "../controllers/user.controller.js";
+import requireAuth from "../middleware/requireAuth.js";
 
 const router = Router();
 

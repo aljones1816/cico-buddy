@@ -1,7 +1,7 @@
-import { Userlog } from "../models/userlog.model";
+import { Userlog } from "../models/userlog.model.js";
 import { Request, Response } from "express";
 import Mongoose from "mongoose";
-import { AuthenticatedRequest } from "../middleware/requireAuth";
+import { AuthenticatedRequest } from "../middleware/requireAuth.js";
 
 // get all userlogs
 const getUserlogs = async (req: AuthenticatedRequest, res: Response) => {

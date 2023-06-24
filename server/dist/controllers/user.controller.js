@@ -1,4 +1,4 @@
-import { User } from "../models/user.model";
+import { User } from "../models/user.model.js";
 import jsonwebtoken from "jsonwebtoken";
 const createToken = (_id) => {
     return jsonwebtoken.sign({ _id }, process.env.SECRET, { expiresIn: "3d" });

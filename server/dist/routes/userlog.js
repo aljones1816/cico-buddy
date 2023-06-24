@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { getUserlogs, createUserlog, deleteUserlog, getUserlogById, updateUserlogById, } from "../controllers/userlog.controller";
-import requireAuth from "../middleware/requireAuth";
+import { getUserlogs, createUserlog, deleteUserlog, getUserlogById, updateUserlogById, } from "../controllers/userlog.controller.js";
+import requireAuth from "../middleware/requireAuth.js";
 const router = Router();
 // require auth for all routes
 router.use(requireAuth);

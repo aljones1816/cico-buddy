@@ -1,4 +1,4 @@
-import { Userlog } from "../models/userlog.model";
+import { Userlog } from "../models/userlog.model.js";
 import Mongoose from "mongoose";
 // get all userlogs
 const getUserlogs = async (req, res) => {
