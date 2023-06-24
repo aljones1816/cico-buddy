@@ -24,5 +24,5 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
         run: |
-          echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+          echo $DOCKERHUB_TOKEN | docker login --username $DOCKERHUB_USERNAME --password-stdin
           docker buildx build --file server/Dockerfile --tag $DOCKERHUB_USERNAME/cico-buddy:latest --push .
