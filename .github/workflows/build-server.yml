@@ -1,0 +1,35 @@
+name: Build and Push Docker Image For Node Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login --username "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Build and Push Docker image
+        env:
+          ATLAS_URI: ${{ secrets.ATLAS_URI }}
+          PORT: ${{ secrets.PORT }}
+          SECRET: ${{ secrets.SECRET }}
+        run: |
+          echo "Building Docker image..."
+          docker buildx build \
+            --file server/Dockerfile \
+            --build-arg ATLAS_URI=${ATLAS_URI} \
+            --build-arg PORT=${PORT} \
+            --build-arg SECRET=${SECRET} \
+            --tag your-dockerhub-username/your-repo-name:latest \
+            --push .
