@@ -5,31 +5,24 @@ on:
     branches:
       - main
 
+env:
+  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login --username "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-
-      - name: Build and Push Docker image
+      - name: Build and Push Docker Image
         env:
-          ATLAS_URI: ${{ secrets.ATLAS_URI }}
-          PORT: ${{ secrets.PORT }}
-          SECRET: ${{ secrets.SECRET }}
+          DOCKER_BUILDKIT: 1
         run: |
-          echo "Building Docker image..."
-          docker buildx build \
-            --file server/Dockerfile . \ 
-            --build-arg ATLAS_URI=${ATLAS_URI} \
-            --build-arg PORT=${PORT} \
-            --build-arg SECRET=${SECRET} \
-            --tag ${{ secrets.DOCKERHUB_USERNAME }}/cico-buddy:latest \
-            --push .
+          echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+          docker buildx build --file server/Dockerfile --tag $DOCKERHUB_USERNAME/cico-buddy:latest --push .
