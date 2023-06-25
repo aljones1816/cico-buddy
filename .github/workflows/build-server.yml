@@ -24,9 +24,9 @@ jobs:
           context: "{{defaultContext}}:server"
           file: ./Dockerfile
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/cico-buddy:latest
           args: |
             ATLAS_URI=${{ secrets.ATLAS_URI }}
             PORT=${{ secrets.PORT }}
             SECRET=${{ secrets.SECRET }}
-          builder: docker://default
