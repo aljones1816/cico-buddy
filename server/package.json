@@ -7,8 +7,7 @@
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^5.5.0",
     "mongoose": "^7.1.1",
-    "validator": "^13.9.0",
-    "dotenv": "^16.0.3"
+    "validator": "^13.9.0"
   },
   "devDependencies": {
     "nodemon": "^1.14.9",
@@ -17,11 +16,12 @@
     "ts-node": "^10.9.1",
     "@types/bcrypt": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.2",
-    "@types/validator": "^13.7.17"
+    "@types/validator": "^13.7.17",
+    "dotenv": "^16.0.3"
   },
   "scripts": {
     "dev": "nodemon",
     "start": "node server.js",
-    "build": "tsc -p ."
+    "build": "tsc -p .."
   }
 }

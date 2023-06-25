@@ -1,12 +1,14 @@
 import mongoose from "mongoose";
 import express from "express";
 import cors from "cors";
-import { config } from "dotenv";
 import { userRouter } from "./routes/user.js";
 import { userlogRouter } from "./routes/userlog.js";
-config();
+if (process.env.NODE_ENV !== "production") {
+  const dotenv = await import("dotenv");
+  dotenv.config();
+}
 const app = express();
-const port = process.env.PORT ?? 80;
+const port = process.env.PORT ?? 5000;
 app.use(cors());
 app.use(express.json());
 app.get("/", (req, res) => {
