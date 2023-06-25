@@ -25,6 +25,8 @@ jobs:
         run: doctl registry login --expiry-seconds 60
       - name: Remove all old images
         run: if [ ! -z "$(doctl registry repository list | grep "$(echo $IMAGE_NAME)")" ]; then doctl registry repository delete-manifest $(echo $IMAGE_NAME) $(doctl registry repository list-tags $(echo $IMAGE_NAME) | grep -o "sha.*") --force; else echo "No repository"; fi
+      - name: Log in to DigitalOcean Container Registry
+        run: echo ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} | docker login -u token --password-stdin registry.digitalocean.com
       - name: Push image to DigitalOcean Container Registry
         run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
 
