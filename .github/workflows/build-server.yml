@@ -10,7 +10,7 @@ env:
   IMAGE_NAME: "cico-buddy-server"
 
 jobs:
-  build_and_push:
+  build_and_pushs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -31,7 +31,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build_and_push
+    needs: build_and_pushs
 
     steps:
       - name: Deploy to Digital Ocean droplet via SSH action
