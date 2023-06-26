@@ -5,6 +5,13 @@ on:
     branches:
       - "main"
 
+  # Run workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Image version"
+        required: true
+
 env:
   REGISTRY: "registry.digitalocean.com/cicobuddy"
   IMAGE_NAME: "cico-buddy-server"
@@ -39,7 +46,7 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSHKEY }}
+          key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           envs: IMAGE_NAME,REGISTRY,{{ secrets.DIGITALOCEAN_ACCESS_TOKEN }},GITHUB_SHA
           script: |
