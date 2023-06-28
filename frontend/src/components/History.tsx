@@ -26,6 +26,7 @@ const History = () => {
   const { register, handleSubmit } = useForm<CaloriesFormInput>();
   const { user } = useAuth();
   const { fetchUserLogs } = useGetUserLogs();
+  const apiURL = import.meta.env.VITE_API_URL;
 
   const handleEdit = (id: string) => {
     setEditingCardId(id);
@@ -38,7 +39,7 @@ const History = () => {
   const handleSaveEdit: SubmitHandler<CaloriesFormInput> = async (data) => {
     if (!user) return;
 
-    const requestUrl = `/api/userlog/update/${editingCardId}`;
+    const requestUrl = apiURL + `/userlog/update/${editingCardId}`;
 
     const cleanData = {
       breakfast: {
@@ -77,7 +78,7 @@ const History = () => {
   };
 
   const handleDeleteLog = async (id: string) => {
-    const res = await fetch(`/api/userlog/${id}`, {
+    const res = await fetch(apiURL + `/userlog/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -139,7 +140,7 @@ const History = () => {
                       w="calc(100% - 20px)"
                       mb="2"
                     >
-                      <Spacer flex="2" marginRight="5px" marginLeft="5px" />
+                      <Spacer flex="" marginRight="5px" marginLeft="5px" />
 
                       <Text
                         color="whiteAlpha.600"

@@ -28,6 +28,7 @@ const Macros = () => {
   const { register, handleSubmit } = useForm<CaloriesFormInput>();
   const { fetchUserLogs } = useGetUserLogs();
   const { currentUserLog } = useUserData();
+  const apiURL = import.meta.env.VITE_API_URL;
 
   const onSubmit: SubmitHandler<CaloriesFormInput> = async (data) => {
     if (!user) return;
@@ -35,8 +36,8 @@ const Macros = () => {
     const isNewLog = !currentUserLog?._id;
 
     const requestUrl = isNewLog
-      ? "/api/userlog/add"
-      : `/api/userlog/update/${currentUserLog?._id}`;
+      ? apiURL + "/userlog/add"
+      : apiURL + `/userlog/update/${currentUserLog?._id}`;
 
     const cleanData = {
       breakfast: {

@@ -31,6 +31,7 @@ const Weight = () => {
   const { register, handleSubmit } = useForm<WeightFormInput>();
   const [hasCurrentLog, setHasCurrentLog] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const apiURL = import.meta.env.VITE_API_URL;
 
   // create an array with the bodyweight and date from each userlog
 
@@ -46,8 +47,8 @@ const Weight = () => {
     const isNewLog = !currentUserLog?._id;
 
     const requestUrl = isNewLog
-      ? "/api/userlog/add"
-      : `/api/userlog/update/${currentUserLog._id}`;
+      ? apiURL + "/userlog/add"
+      : apiURL + `/userlog/update/${currentUserLog._id}`;
 
     const cleanData = {
       ...data,

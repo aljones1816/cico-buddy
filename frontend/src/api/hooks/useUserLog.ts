@@ -10,11 +10,12 @@ const useGetUserLogs = () => {
   const [data, setData] = useState<iUserLog[]>([]);
   const [error, setError] = useState<string | null>(null);
   const { setUserLogs, setCurrentUserLog } = useUserData();
+  const apiURL = import.meta.env.VITE_API_URL;
 
   const fetchUserLogs = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch(url, {
+      const res = await fetch(apiURL + "/userlog", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

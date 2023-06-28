@@ -29,6 +29,7 @@ const Profile = () => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const { handleLogout } = useLogout();
   const { register, handleSubmit } = useForm<UserFormInput>();
+  const apiURL = import.meta.env.VITE_API_URL;
 
   const onSubmit: SubmitHandler<UserFormInput> = async (data) => {
     if (!user) return;
@@ -41,7 +42,7 @@ const Profile = () => {
     };
 
     try {
-      const res = await fetch(`/api/user/update`, {
+      const res = await fetch(apiURL + `/user/update`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

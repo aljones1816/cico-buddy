@@ -5,11 +5,12 @@ export const useSignup = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const { login } = useAuth();
+  const apiURL = import.meta.env.VITE_API_URL;
 
   const handleSignup = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/user/signup", {
+      const res = await fetch(apiURL + "/user/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

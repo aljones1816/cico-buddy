@@ -8,5 +8,6 @@ export default defineConfig({
       "/api": "http://localhost:8080",
     },
   },
+  envDir: "./",
   plugins: [react()],
 });
