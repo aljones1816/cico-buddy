@@ -51,7 +51,7 @@ You will then need to create a .env file in the top level of the server folder t
 Execute ```npm run dev``` in the server and frontend directories to spin up development servers.
 
 ### Prerequisites
-You will need to have Node installed on your local machine to run the above steps.
+You will need to have [Node](https://nodejs.org/) installed on your local machine to run the above steps.
 
 ## Built With
 
