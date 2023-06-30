@@ -65,6 +65,7 @@ You will need to have [Node](https://nodejs.org/) installed on your local machin
 
 ### Server
 * [Node.js](https://nodejs.org/)
+* [Express](https://expressjs.com)
 * [TypeScript](https://www.typescriptlang.org/)
 * [MongoDB](https://www.mongodb.com/)
 * [Mongoose](https://mongoosejs.com/)
