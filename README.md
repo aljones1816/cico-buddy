@@ -37,9 +37,7 @@ A live version of the app is available [here](https://cico-buddy.com).
 To run this project locally, clone the repository to your local machine by executing 
 
 ```
-[function test() {
-  console.log("notice the blank line before this function?");
-}](https://github.com/aljones1816/cico-buddy.git)
+$ git clone https://github.com/aljones1816/cico-buddy.git
 ```
 
 in your terminal. Then ```cd cico-buddy``` and run ```npm install``` in the project root (to install Typescript), in the server directory, and in the frontend directory.
