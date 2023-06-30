@@ -46,7 +46,7 @@ in your terminal. Then ```cd cico-buddy``` and run ```npm install``` in the proj
 You will then need to create a .env file in the top level of the server folder to contain the following secrets (these will be loaded via dotenv in development mode):
 
 * ATLAS_URI: The URI for your MongoDB Atlas instance (see [here](https://www.mongodb.com/docs/atlas/getting-started/) to set up an Atlas database).
-* PORT: the port number the server app will listen on (default is 80).
+* PORT: the port number the server app will listen on (default is 80 - if you change this you will need to change the port in the frontend/.env.development configuration file).
 * SECRET: a secret phrase that will be used by JSON Web Tokens to encrypt user tokens.
 
 Execute ```npm run dev``` in the server and frontend directories to spin up development servers.
