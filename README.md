@@ -4,7 +4,7 @@ CicoBuddy is a macro and weight-tracking app that is built to be simple and intu
 
 ## Table of Contents
 
-Project Description
+[Project Description](#project-description)
 
 Features
 
